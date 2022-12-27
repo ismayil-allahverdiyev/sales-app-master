@@ -1,17 +1,19 @@
 import 'dart:convert';
+import 'dart:io';
 
 class Product {
   var id;
-  var userId;
+  String userId;
   String categorie;
   String title;
   double price;
   double rate;
+  File? image;
   List<String>? images;
   List? favs;
 
   Product(this.id, this.title, this.price, this.rate, this.images, this.favs,
-      this.categorie, this.userId);
+      this.categorie, this.userId, this.image);
 
   Map<String, dynamic> toMap() {
     return {
@@ -36,6 +38,7 @@ class Product {
       map['favs'],
       map['categorie'],
       map['userId'],
+      map['image'],
     );
   }
 
@@ -49,6 +52,7 @@ class Product {
       json['favs'],
       json['categorie'],
       json['userId'],
+      json['image'],
     );
   }
 

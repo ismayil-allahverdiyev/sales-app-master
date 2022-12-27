@@ -4,20 +4,40 @@ const DB = "mongodb+srv://isi:1124816%40isi2003@clusteraisha.fgl4fve.mongodb.net
 
 const express = require("express");
 const mongoose = require("mongoose");
-const User = require("./models/user.js");
+var Grid = require('gridfs-stream');
+const uploadGfs = require("./middlewares/gfsUpload")
 const authRouter = require("./routes/auth.js");
 const posterRouter = require("./routes/poster.js");
+
+const filesRouter = require("./routes/files");
+
 const app = express();
 
-mongoose.connect(DB).then(()=>{
-    console.log("Connection successful");
-}).catch((e)=>{
-    console.log("1");
-    console.log(e);
+// let gfs;
+let db;
+
+const connectDatabase = async () => {
+    try {      
+      await mongoose.connect(DB);
+  
+      console.log("connected to database");
+    } catch (error) {
+      console.log(error);
+      process.exit(1);
+    }
+  };
+  
+connectDatabase();
+
+mongoose.connection.on('connected', () => {
+    module.exports.gfs = new mongoose.mongo.GridFSBucket(mongoose.connection, {
+      bucketName: "uploads"
+    })
 })
 
 app.use(express.json());
 app.use(authRouter);
+app.use(filesRouter);
 app.use(posterRouter);
 
 app.get("/hi", (req, res) => {
@@ -25,6 +45,8 @@ app.get("/hi", (req, res) => {
     res.send("aaa")
 })
 
-app.listen(PORT, "192.168.130.26", function (){
+app.listen(PORT, "", function (){
     console.log(`Connected to ${PORT}`);
 });
+
+// module.exports = {gfs}

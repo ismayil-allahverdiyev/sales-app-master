@@ -251,7 +251,7 @@ class _ProfileViewState extends State<ProfileView>
                     children: [
                       CategoryProductView(
                           product: Product(1, "aaaaaaa", 13, 4.7,
-                              ["assets/images/trees.png"], [], "", 0),
+                              ["assets/images/trees.png"], [], "", "", null),
                           bought: true),
                       CategoryProductView(
                           product: Product(
@@ -262,11 +262,12 @@ class _ProfileViewState extends State<ProfileView>
                               ["assets/images/native_americans.png"],
                               [],
                               "",
-                              0),
+                              "",
+                              null),
                           bought: true),
                       CategoryProductView(
                           product: Product(1, "aaaaaaa", 23, 3.7,
-                              ["assets/images/trees.png"], [], "", 0),
+                              ["assets/images/trees.png"], [], "", "", null),
                           bought: true)
                     ],
                   ),
@@ -279,7 +280,7 @@ class _ProfileViewState extends State<ProfileView>
                     children: [
                       CategoryProductView(
                           product: Product(1, "aaaaaaa", 18, 1.7,
-                              ["assets/images/whale.png"], [], "", 0)),
+                              ["assets/images/whale.png"], [], "", "", null)),
                       CategoryProductView(
                           product: Product(
                               1,
@@ -289,10 +290,11 @@ class _ProfileViewState extends State<ProfileView>
                               ["assets/images/native_americans.png"],
                               [],
                               "",
-                              0)),
+                              "",
+                              null)),
                       CategoryProductView(
                           product: Product(1, "aaaaaaa", 23, 0.7,
-                              ["assets/images/trees.png"], [], "", 0))
+                              ["assets/images/trees.png"], [], "", "", null))
                     ],
                   ),
                 ),

@@ -55,7 +55,8 @@ class _SearchViewState extends State<SearchView> {
                   ["assets/images/bird.png", "assets/images/whale.png"],
                   [],
                   "",
-                  0)),
+                  "",
+                  null)),
           CategoryProductView(
               product: Product(
                   0,
@@ -65,7 +66,8 @@ class _SearchViewState extends State<SearchView> {
                   ["assets/images/bird.png", "assets/images/whale.png"],
                   [],
                   "",
-                  0)),
+                  "",
+                  null)),
           CategoryProductView(
               product: Product(
                   0,
@@ -75,7 +77,8 @@ class _SearchViewState extends State<SearchView> {
                   ["assets/images/bird.png", "assets/images/whale.png"],
                   [],
                   "",
-                  0)),
+                  "",
+                  null)),
           CategoryProductView(
               product: Product(
                   0,
@@ -85,7 +88,8 @@ class _SearchViewState extends State<SearchView> {
                   ["assets/images/bird.png", "assets/images/whale.png"],
                   [],
                   "",
-                  0)),
+                  "",
+                  null)),
         ],
       ),
     );

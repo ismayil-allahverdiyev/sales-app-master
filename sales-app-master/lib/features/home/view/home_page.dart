@@ -4,10 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sales_app/core/constants/app_constants.dart';
 import 'package:sales_app/features/addPage/view/add_page_view.dart';
+import 'package:sales_app/features/addVideoPage/view/add_video_view.dart';
 import 'package:sales_app/features/category/view/category_view.dart';
 import 'package:sales_app/features/home/view/carousel.dart';
 import 'package:sales_app/features/sign_page/view_model/user_info_view_model.dart';
 import 'package:sales_app/features/widgets/custom_bar_app.dart';
+import 'package:sales_app/video_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePageView extends StatefulWidget {
@@ -40,14 +42,24 @@ class _HomePageViewState extends State<HomePageView> {
       child: Scaffold(
         drawer: SafeArea(
           child: Drawer(
-            child: ListTile(
-              title: Text("Auyeh"),
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => AddPageView()));
-              },
-            ),
-          ),
+              child: Column(
+            children: [
+              ListTile(
+                title: Text("Add image"),
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => AddPageView()));
+                },
+              ),
+              ListTile(
+                title: Text("Add video"),
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => VideoApp()));
+                },
+              ),
+            ],
+          )),
         ),
         body: SafeArea(
           child: NestedScrollView(

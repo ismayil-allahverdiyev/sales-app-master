@@ -39,7 +39,8 @@ class _CategoryProductViewState extends State<CategoryProductView> {
                             ],
                             [],
                             "",
-                            0),
+                            "",
+                            null),
                       )));
             },
             child: Container(

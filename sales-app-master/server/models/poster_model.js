@@ -8,7 +8,7 @@ const posterSchema = mongoose.Schema({
         default: "all"
     },
     userId:{
-        type: Number,
+        type: String,
         required: true,
         trim: true
     },
@@ -20,6 +20,9 @@ const posterSchema = mongoose.Schema({
         type: String,
         default: "This title is automatically generated"
     },
+    image:{
+        type: String,
+    }
 });
 
 const Poster = mongoose.model("Poster", posterSchema);

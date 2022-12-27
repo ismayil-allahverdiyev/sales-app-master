@@ -25,7 +25,8 @@ class BasketViewModel extends ChangeNotifier {
           ["assets/images/whale.png", "assets/images/trees.png"],
           [],
           "",
-          0),
+          "",
+          null),
       Product(
           1,
           "Some mountain view that you would never see in your entire life habibi",
@@ -38,7 +39,8 @@ class BasketViewModel extends ChangeNotifier {
           ],
           [],
           "",
-          0),
+          "",
+          null),
       Product(
           2,
           "Some mountain view that you would never see in your entire life habibi",
@@ -47,7 +49,8 @@ class BasketViewModel extends ChangeNotifier {
           ["assets/images/native_americans.png"],
           [],
           "",
-          0),
+          "",
+          null),
       Product(
           3,
           "Some mountain view that you would never see in your entire life habibi",
@@ -56,7 +59,8 @@ class BasketViewModel extends ChangeNotifier {
           ["assets/images/bird.png"],
           [],
           "",
-          0),
+          "",
+          null),
     ];
     products.forEach((element) {
       list.add(BasketProductView(product: element));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sales_app/features/addPage/view_model/add_page_view_model.dart';
 import 'package:sales_app/features/base/view_model/base_view_model.dart';
 import 'package:sales_app/features/home/view/home_page.dart';
 import 'package:sales_app/features/pagenav/view/pages.dart';
@@ -24,6 +25,7 @@ void main() {
       ChangeNotifierProvider(create: (_) => UserInfoViewModel()),
       ChangeNotifierProvider(create: (_) => SearchViewModel()),
       ChangeNotifierProvider(create: (_) => PagesViewModel()),
+      ChangeNotifierProvider(create: (_) => AddPageViewModel()),
     ],
     child: const MaterialApp(
       debugShowCheckedModeBanner: false,

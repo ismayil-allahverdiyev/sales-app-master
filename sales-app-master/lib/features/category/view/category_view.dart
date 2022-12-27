@@ -54,7 +54,8 @@ class _CategoryViewState extends State<CategoryView> {
                   ["assets/images/bird.png", "assets/images/whale.png"],
                   [],
                   "",
-                  0)),
+                  "",
+                  null)),
           CategoryProductView(
               product: Product(
                   0,
@@ -64,7 +65,8 @@ class _CategoryViewState extends State<CategoryView> {
                   ["assets/images/bird.png", "assets/images/whale.png"],
                   [],
                   "",
-                  0)),
+                  "",
+                  null)),
           CategoryProductView(
               product: Product(
                   0,
@@ -74,7 +76,8 @@ class _CategoryViewState extends State<CategoryView> {
                   ["assets/images/bird.png", "assets/images/whale.png"],
                   [],
                   "",
-                  0)),
+                  "",
+                  null)),
           CategoryProductView(
               product: Product(
                   0,
@@ -84,7 +87,8 @@ class _CategoryViewState extends State<CategoryView> {
                   ["assets/images/bird.png", "assets/images/whale.png"],
                   [],
                   "",
-                  0)),
+                  "",
+                  null)),
         ],
       ),
     );
