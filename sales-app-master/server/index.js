@@ -45,7 +45,7 @@ app.get("/hi", (req, res) => {
     res.send("aaa")
 })
 
-app.listen(PORT, "", function (){
+app.listen(PORT, "192.168.57.26", function (){
     console.log(`Connected to ${PORT}`);
 });
 

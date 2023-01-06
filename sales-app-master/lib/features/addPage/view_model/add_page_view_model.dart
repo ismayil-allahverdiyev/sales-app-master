@@ -49,8 +49,7 @@ class AddPageViewModel extends ChangeNotifier {
 
   pickImage(BuildContext context) async {
     try {
-      final XFile? pickedFile = await _picker.pickImage(
-        imageQuality: 10,
+      final XFile? pickedFile = await _picker.pickVideo(
         source: ImageSource.gallery,
       );
 

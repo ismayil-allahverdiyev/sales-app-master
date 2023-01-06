@@ -10,27 +10,30 @@ filesRouter.get("/api/files/:filename", (req, res) => {
     try{
         const parFilename = req.params.filename
         console.log(parFilename)
-        const range = req.headers.range;
-        if (!range) {
-            console.log("Requires Range header");
-        }
+        
         // const file = index.gfs.find({filename: parFilename}).toArray((err, result) =>{
              
         // });
         // GridFS Collection
         // const file = index.gfs.findOne({filename: parFilename}, (err, video) => {
 
-        const file = index.gfs.find({filename: parFilename}).toArray((err, video) =>{
-            if (!video) {
+        const file = index.gfs.find({filename: parFilename}).toArray((err, files) =>{
+            if(err){
+                res.status(200).send(err);
+                return;
+            }
+            if (!files) {
                 res.status(404).send("No video uploaded!");
                 return;
             }
-            console.log(video[0].length +" video[0].length");
-            console.log(video.length + "video.length");
+            console.log(files[0].length + "");
+        
 
             // Create response headers
-            const videoSize = 20247438;
-            const start = Number(range.replace(/\D/g, ""));
+            const range = files[0].length;//getting the length of the first found file
+            const videoSize = files[0].length;
+            const start = 0;
+            //            const start = Number(range.replace(/\D/g, ""));
             const end = videoSize - 1;
 
             const contentLength = end - start + 1;

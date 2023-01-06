@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -36,70 +37,16 @@ class _AddVideoViewState extends State<AddVideoView> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Sthh"),
-      ),
       body: ListView(
         children: [
-          TextField(
-            controller: Provider.of<AddPageViewModel>(context, listen: false)
-                .titleController,
-          ),
-          TextField(
-            controller: Provider.of<AddPageViewModel>(context, listen: false)
-                .categorieController,
-          ),
-          TextField(
-            controller: Provider.of<AddPageViewModel>(context, listen: false)
-                .priceController,
-            keyboardType: TextInputType.number,
-          ),
-          IconButton(
-            onPressed: () {
-              posterService.addPoster(
-                  context: context,
-                  title: Provider.of<AddPageViewModel>(context, listen: false)
-                      .titleController
-                      .text,
-                  categorie:
-                      Provider.of<AddPageViewModel>(context, listen: false)
-                          .categorieController
-                          .text,
-                  price: double.parse(
-                      Provider.of<AddPageViewModel>(context, listen: false)
-                          .priceController
-                          .text),
-                  userId: Provider.of<UserInfoViewModel>(context, listen: false)
-                      .user
-                      .id,
-                  file: Provider.of<AddPageViewModel>(context, listen: false)
-                      .nFile!);
-            },
-            icon: Icon(Icons.radar_outlined),
-          ),
-          IconButton(
-            onPressed: () {
-              posterService.getAllPosters(context: context);
-            },
-            icon: Icon(Icons.send),
-          ),
-          IconButton(
-            onPressed: () async {
-              Provider.of<AddPageViewModel>(context, listen: false)
-                  .pickImage(context);
-            },
-            icon: Icon(
-              Icons.image,
+          Icon(Icons.arrow_back),
+          Text("Title"),
+          CupertinoTextField(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                  color: Colors.grey[300]!, style: BorderStyle.solid, width: 2),
             ),
-          ),
-          IconButton(
-            onPressed: () {
-              print("Path is " +
-                  Provider.of<AddPageViewModel>(context, listen: false)
-                      .imageFile
-                      .path);
-            },
-            icon: Icon(Icons.upload),
           ),
           FutureBuilder(
             future: _initializeVideoPlayerFuture,

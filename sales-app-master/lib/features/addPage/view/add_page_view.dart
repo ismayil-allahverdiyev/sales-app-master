@@ -34,7 +34,7 @@ class AddPageView extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              posterService.addPoster(
+              posterService.addVideoPoster(
                   context: context,
                   title: Provider.of<AddPageViewModel>(context, listen: false)
                       .titleController

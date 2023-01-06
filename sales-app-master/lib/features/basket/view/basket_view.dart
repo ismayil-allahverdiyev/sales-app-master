@@ -86,7 +86,10 @@ class _BasketViewState extends State<BasketView> {
         padding: const EdgeInsets.all(8.0),
         child: ListView(
           children: [
-            Center(
+            const SizedBox(
+              height: 24,
+            ),
+            const Center(
               child: Text(
                 "Basket",
                 style: TextStyle(
@@ -95,7 +98,10 @@ class _BasketViewState extends State<BasketView> {
                     fontSize: 22),
               ),
             ),
-            SizedBox(
+            const SizedBox(
+              height: 24,
+            ),
+            const SizedBox(
               height: 8,
             ),
             FutureBuilder(

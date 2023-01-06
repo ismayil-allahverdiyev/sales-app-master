@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-String uri = "";
+String uri = "http://192.168.57.26:3000";
 
 class AppConstants {
   static const Color primaryColor = Color(0xff762ec1);

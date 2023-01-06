@@ -70,10 +70,10 @@ class PosterService {
 
     var request =
         http.MultipartRequest("POST", Uri.parse(uri + "/api/addVideoPoster"));
-    request.fields["categorie"] = categorie;
-    request.fields["userId"] = userId;
-    request.fields["price"] = price.toString();
-    request.fields["title"] = title;
+    // request.fields["categorie"] = categorie;
+    // request.fields["userId"] = userId;
+    // request.fields["price"] = price.toString();
+    // request.fields["title"] = title;
 
     final val = await file.readAsBytes();
 

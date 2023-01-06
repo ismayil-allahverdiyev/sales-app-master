@@ -7,7 +7,7 @@ const uploadGfs = require("../middlewares/gfsUpload")
 
 const posterRouter = express.Router();
 
-const url = "http://192.168.0.19:3000/api/files/"
+const url = "http://192.168.57.26:3000/api/files/"
 
 posterRouter.get("/api/getAllPostersByTitle", async (req, res)=>{
     const{categorie} = req.body;
