@@ -16,12 +16,14 @@ class _VideoAppState extends State<VideoApp> {
   @override
   void initState() {
     super.initState();
+    print("State Ran");
     _controller = VideoPlayerController.network(
         // 'http://192.168.57.26:3000/api/files/18528cb1355f446d5fd33ca60e587b67.mp4')
 
-        'https://assets.mixkit.co/videos/preview/mixkit-going-down-a-curved-highway-through-a-mountain-range-41576-large.mp4')
+        'https://snagom-node-server.herokuapp.com/api/files/5845445db8140380da0ab5ac051df528.mp4')
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        print("Is initialized i guess");
         setState(() {});
       });
   }

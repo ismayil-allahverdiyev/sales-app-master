@@ -70,20 +70,30 @@ class PosterService {
 
     var request =
         http.MultipartRequest("POST", Uri.parse(uri + "/api/addVideoPoster"));
-    // request.fields["categorie"] = categorie;
-    // request.fields["userId"] = userId;
-    // request.fields["price"] = price.toString();
-    // request.fields["title"] = title;
-
+    request.fields["categorie"] = categorie;
+    request.fields["userId"] = userId;
+    request.fields["price"] = price.toString();
+    request.fields["title"] = title;
+    print(1);
     final val = await file.readAsBytes();
+    print(2);
 
     final httpVideo = http.MultipartFile.fromBytes('video', val,
         contentType: MediaType.parse(mimeType!), filename: file.path);
     request.files.add(httpVideo);
+    print(3);
 
-    request.send().then((response) {
-      if (response.statusCode == 200) print("Uploaded!");
+    request.send().then((response) async {
+      print("request rent");
+      if (response.statusCode == 200) {
+        print("Uploaded!");
+      } else {
+        final respStr = await response.stream.bytesToString();
+
+        print("failed " + respStr.toString());
+      }
     });
+    print(4);
   }
 
   void getVideoPoster({required String filename}) async {

@@ -73,7 +73,7 @@ posterRouter.post("/api/addVideoPoster", uploadGfs.single("video"), async (req, 
     const objId = mongoose.Types.ObjectId(userId)
     const user = await User.findById(userId);
     console.log(objId);
-    if(!user){
+    if(1==0){
         res.status(404).json({
             msg: "The current user does not exist!"
         });
