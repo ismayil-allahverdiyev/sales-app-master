@@ -45,17 +45,10 @@ class _HomePageViewState extends State<HomePageView> {
               child: Column(
             children: [
               ListTile(
-                title: Text("Add image"),
+                title: Text("Add poster"),
                 onTap: () {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => AddPageView()));
-                },
-              ),
-              ListTile(
-                title: Text("Add video"),
-                onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => VideoApp()));
                 },
               ),
             ],

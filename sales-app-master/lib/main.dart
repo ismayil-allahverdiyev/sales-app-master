@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sales_app/features/addPage/view_model/add_page_view_model.dart';
 import 'package:sales_app/features/base/view_model/base_view_model.dart';
@@ -27,8 +28,11 @@ void main() {
       ChangeNotifierProvider(create: (_) => PagesViewModel()),
       ChangeNotifierProvider(create: (_) => AddPageViewModel()),
     ],
-    child: const MaterialApp(
+    child: MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        fontFamily: "Poppins",
+      ),
       home: MyApp(),
     ),
   ));
