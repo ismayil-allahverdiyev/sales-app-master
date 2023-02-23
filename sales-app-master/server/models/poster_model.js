@@ -21,7 +21,7 @@ const posterSchema = mongoose.Schema({
         default: "This title is automatically generated"
     },
     image:{
-        type: String,
+        type: [String],
     }
 });
 

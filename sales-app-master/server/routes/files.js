@@ -6,16 +6,10 @@ const { any } = require("../middlewares/gfsUpload");
 
 const filesRouter = express.Router();
 
-filesRouter.get("/api/files/:filename", (req, res) => {
+filesRouter.get("/api/videos/:filename", (req, res) => {
     try{
         const parFilename = req.params.filename
         console.log(parFilename)
-        
-        // const file = index.gfs.find({filename: parFilename}).toArray((err, result) =>{
-             
-        // });
-        // GridFS Collection
-        // const file = index.gfs.findOne({filename: parFilename}, (err, video) => {
 
         const file = index.gfs.find({filename: parFilename}).toArray((err, files) =>{
             if(err){
@@ -30,7 +24,7 @@ filesRouter.get("/api/files/:filename", (req, res) => {
         
 
             // Create response headers
-            const range = files[0].length;//getting the length of the first found file
+            const range = files[0].length; //getting the length of the first found file
             const videoSize = files[0].length;
             const start = 0;
             //            const start = Number(range.replace(/\D/g, ""));
@@ -57,20 +51,23 @@ filesRouter.get("/api/files/:filename", (req, res) => {
             // Finally pipe video to response
             downloadStream.pipe(res);
             console.log(" 5 ")
+        });        
+    }catch(e){
+        console.log(e)
+        res.send(e)
+    }
+})
+
+filesRouter.get("/api/images/:filename", (req, res) => {
+    try{
+        const parFilename = req.params.filename
+        console.log(parFilename)
+
+        const file = index.gfs.openDownloadStreamByName(parFilename);
+        file.on("error", function(err){
+            res.send("No image found with the given id!")
         });
-        // const file = index.gfs.find({filename: parFilename}).toArray((err, result) =>{
-        //     if(err){
-        //         res.status(400).send({err})
-        //     }else{
-        //         console.log("result is " + result)
-        //         if(!result || result.length == 0){
-        //             res.status(201).send({"message" : "File does not exist!"})
-        //         }else{
-        //             index.gfs.openDownloadStreamByName(parFilename).pipe(res)
-        //         }
-        //     }
-        // });
-        
+        file.pipe(res)
     }catch(e){
         console.log(e)
         res.send(e)

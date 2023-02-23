@@ -18,11 +18,11 @@ var storage = multer.diskStorage({
 var upload = multer({
     storage: storage,
     fileFilter: (req, file, callback)=>{
-        console.log("Type is "+file.mimetype);
+        console.log("Multer worked");
         if(file.mimetype == "image/png" || file.mimetype == "image/jpeg" || file.mimetype == "image/jpg" || file.mimetype == "video/mp4"){
             callback(null, true)
         }else{
-            console.log("Only jpg, mp4 and png files are allowed!")
+            console.log("Only jpg, jpeg, mp4 and png files are allowed!")
             callback(null, false)
         }
     },

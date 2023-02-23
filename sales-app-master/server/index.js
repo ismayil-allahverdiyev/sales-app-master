@@ -13,7 +13,6 @@ const filesRouter = require("./routes/files");
 
 const app = express();
 
-// let gfs;
 let db;
 
 const connectDatabase = async () => {
@@ -41,11 +40,10 @@ app.use(filesRouter);
 app.use(posterRouter);
 
 app.get("/hi", (req, res) => {
-    console.log("SSS");
     res.send("aaa")
 })
 
-app.listen(PORT, "192.168.153.26", function (){
+app.listen(PORT, "192.168.1.71", function (){
     console.log(`Connected to ${PORT}`);
 });
 

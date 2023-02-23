@@ -7,7 +7,9 @@ const uploadGfs = require("../middlewares/gfsUpload")
 
 const posterRouter = express.Router();
 
-const url = "http://192.168.57.26:3000/api/files/"
+const videoUrl = "http://192.168.57.26:3000/api/videos/"
+const imageUrl = "http://192.168.57.26:3000/api/videos/"
+
 
 posterRouter.get("/api/getAllPostersByTitle", async (req, res)=>{
     const{categorie} = req.body;
@@ -37,7 +39,8 @@ posterRouter.get("/api/getAllPosters", async (req, res)=>{
     )
 })
 
-posterRouter.post("/api/addPoster", upload.single("image"), async (req, res)=>{
+posterRouter.post("/api/addPoster", uploadGfs.array("image"), async (req, res)=>{
+    console.log("QUQU")
     const{userId, categorie, price, title} = req.body;
     console.log(userId);
     const objId = mongoose.Types.ObjectId(userId)
@@ -57,9 +60,14 @@ posterRouter.post("/api/addPoster", upload.single("image"), async (req, res)=>{
             "image": ""
         })
         console.log(req.body.image);
-        console.log("file " +  req.file)
-        if(req.file){
-            poster.image = req.file.path
+        console.log("file " +  req.files[0])
+        if(req.files){
+            let images = []
+            req.files.forEach((element) => {
+                console.log(element.filename)
+                images.push(imageUrl + element.filename)
+            })
+            poster.image = images
         }
         poster = await poster.save();
         console.log("Poster is " + poster);
@@ -87,9 +95,9 @@ posterRouter.post("/api/addVideoPoster", uploadGfs.single("video"), async (req, 
             "image": ""
         })
         console.log(req.body.video);
-        console.log(url+req.file.filename)
+        console.log(videoUrl+req.file.filename)
         if(req.file){
-            poster.image = url+req.file.filename
+            poster.image = videoUrl+req.file.filename
         }
         poster = await poster.save();
         console.log("Poster is " + poster);

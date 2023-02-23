@@ -146,7 +146,7 @@ class _HomePageViewState extends State<HomePageView> {
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
                               child: Row(
-                                children: [
+                                children: const [
                                   Text(
                                     "Explore ",
                                     style: TextStyle(
@@ -200,7 +200,7 @@ class _HomePageViewState extends State<HomePageView> {
                             height: height / 4 - 8,
                             width: width / 2 - 18,
                             decoration: BoxDecoration(
-                                gradient: LinearGradient(
+                                gradient: const LinearGradient(
                                     colors: [
                                       Colors.transparent,
                                       Colors.transparent,
@@ -218,7 +218,7 @@ class _HomePageViewState extends State<HomePageView> {
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
                             child: Row(
-                              children: [
+                              children: const [
                                 Text(
                                   "Explore ",
                                   style: TextStyle(
@@ -254,7 +254,7 @@ class _HomePageViewState extends State<HomePageView> {
                           width: width / 2 - 10,
                           child: Card(
                             elevation: 10,
-                            color: Color(0xffEDE6E3),
+                            color: const Color(0xffEDE6E3),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
                             child: ClipRRect(
@@ -271,7 +271,7 @@ class _HomePageViewState extends State<HomePageView> {
                             height: height / 4 - 8,
                             width: width / 2 - 18,
                             decoration: BoxDecoration(
-                                gradient: LinearGradient(
+                                gradient: const LinearGradient(
                                     colors: [
                                       Colors.transparent,
                                       Colors.transparent,
@@ -289,7 +289,7 @@ class _HomePageViewState extends State<HomePageView> {
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
                             child: Row(
-                              children: [
+                              children: const [
                                 Text(
                                   "Explore ",
                                   style: TextStyle(
@@ -342,7 +342,7 @@ class _HomePageViewState extends State<HomePageView> {
                             height: height / 4 - 8,
                             width: width / 2 - 18,
                             decoration: BoxDecoration(
-                                gradient: LinearGradient(
+                                gradient: const LinearGradient(
                                     colors: [
                                       Colors.transparent,
                                       Colors.transparent,
@@ -360,7 +360,7 @@ class _HomePageViewState extends State<HomePageView> {
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
                             child: Row(
-                              children: [
+                              children: const [
                                 Text(
                                   "Explore ",
                                   style: TextStyle(
@@ -413,7 +413,7 @@ class _HomePageViewState extends State<HomePageView> {
                             height: height / 4 - 8,
                             width: width / 2 - 18,
                             decoration: BoxDecoration(
-                                gradient: LinearGradient(
+                                gradient: const LinearGradient(
                                     colors: [
                                       Colors.transparent,
                                       Colors.transparent,
@@ -431,7 +431,7 @@ class _HomePageViewState extends State<HomePageView> {
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
                             child: Row(
-                              children: [
+                              children: const [
                                 Text(
                                   "Explore ",
                                   style: TextStyle(
