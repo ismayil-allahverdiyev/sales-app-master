@@ -36,7 +36,7 @@ filesRouter.get("/api/videos/:filename", (req, res) => {
                 "Content-Range": `bytes ${start}-${end}/${videoSize}`,
                 "Accept-Ranges": "bytes",
                 "Content-Length": contentLength,
-                "Content-Type": "video/hevc",
+                "Content-Type": "video/mp4",
             };
             console.log(" 1 ")
             // HTTP Status 206 for Partial Content
