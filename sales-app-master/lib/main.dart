@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sales_app/features/addPage/view_model/add_page_view_model.dart';
-import 'package:sales_app/features/base/view_model/base_view_model.dart';
 import 'package:sales_app/features/home/view/home_page.dart';
-import 'package:sales_app/features/pagenav/view/pages.dart';
-import 'package:sales_app/features/pagenav/view_model/pages_view_model.dart';
+import 'package:sales_app/features/base/view/pages.dart';
+import 'package:sales_app/features/base/view_model/pages_view_model.dart';
 import 'package:sales_app/features/product/view_model/product_view_model.dart';
 import 'package:sales_app/features/profile/view_model/profile_view_model.dart';
 import 'package:sales_app/features/search/view_model/search_view_model.dart';
@@ -19,7 +18,6 @@ import 'features/basket/view_model/basket_view_model.dart';
 void main() {
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (_) => BaseViewModel()),
       ChangeNotifierProvider(create: (_) => ProductViewModel()),
       ChangeNotifierProvider(create: (_) => ProfileViewModel()),
       ChangeNotifierProvider(create: (_) => BasketViewModel()),

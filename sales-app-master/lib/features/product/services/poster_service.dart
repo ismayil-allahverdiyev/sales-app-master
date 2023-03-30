@@ -34,23 +34,29 @@ class PosterService {
       required String categorie,
       required double price,
       required String title,
-      required File file}) async {
-    final mimeType = lookupMimeType(file.path);
-
-    print("mimetype is $mimeType");
-
+      required List<File> files}) async {
     var request =
         new http.MultipartRequest("POST", Uri.parse(uri + "/api/addPoster"));
+
     request.fields["categorie"] = categorie;
     request.fields["userId"] = userId;
     request.fields["price"] = price.toString();
     request.fields["title"] = title;
 
-    final val = await file.readAsBytes();
+    var mimeType;
+    var val;
+    var httpImage;
+    for (int i = 0; i < files.length; i++) {
+      mimeType = lookupMimeType(files[i].path);
+      print("mimetype is $mimeType");
 
-    final httpImage = http.MultipartFile.fromBytes('image', val,
-        contentType: MediaType.parse(mimeType!), filename: file.path);
-    request.files.add(httpImage);
+      val = await files[i].readAsBytes();
+      httpImage = http.MultipartFile.fromBytes('image', val,
+          contentType: MediaType.parse(mimeType!), filename: files[i].path);
+      request.files.add(httpImage);
+    }
+    print(request.files);
+
     request.send().then((response) {
       if (response.statusCode == 200) print("Uploaded!");
     });

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sales_app/core/constants/app_constants.dart';
 import 'package:sales_app/features/addPage/view/carousel.dart';
 import 'package:sales_app/features/addPage/view_model/add_page_view_model.dart';
+import 'package:sales_app/features/category/services/category_service.dart';
 import 'package:sales_app/features/product/services/poster_service.dart';
 import 'package:sales_app/features/sign_page/view_model/user_info_view_model.dart';
 
@@ -15,7 +16,6 @@ class AddPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    PosterService posterService = PosterService();
 
     return Scaffold(
       appBar: AppBar(
@@ -35,280 +35,365 @@ class AddPageView extends StatelessWidget {
         onTap: (() {
           unFocus(context);
         }),
-        child: ListView(
+        child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
-              child: Text(
-                "Title",
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-              child: CupertinoTextField(
-                controller:
-                    Provider.of<AddPageViewModel>(context, listen: false)
-                        .titleController,
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey[300]!,
+            ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                  child: Text(
+                    "Title",
                   ),
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(6),
                 ),
-              ),
-            ),
-            SizedBox(
-              height: 50,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-                child: DropdownButtonFormField(
-                  hint: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Select",
-                    ),
-                  ),
-                  isDense: true,
-                  isExpanded: true,
-                  decoration: InputDecoration(
-                    hintStyle: TextStyle(),
-                    fillColor: Colors.white,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(6),
-                      borderSide: BorderSide(
-                        style: BorderStyle.solid,
-                        color: Colors.grey[300]!,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(6),
-                      borderSide: BorderSide(
-                        style: BorderStyle.solid,
-                        color: Colors.grey[300]!,
-                      ),
-                    ),
-                    disabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(6),
-                      borderSide: BorderSide(
-                        style: BorderStyle.solid,
-                        color: Colors.grey[300]!,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(6),
-                      borderSide: BorderSide(
-                        style: BorderStyle.solid,
-                        color: Colors.grey[300]!,
-                      ),
-                    ),
-                  ),
-                  items: [
-                    DropdownMenuItem(
-                      value: 0,
-                      child: Text("AAA"),
-                    )
-                  ],
-                  onChanged: (value) {},
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (_) {
-                    return Center(
-                      child: Container(
-                        height: width / 2,
-                        width: width - 50,
-                        color: Colors.white,
-                      ),
-                    );
-                  },
-                );
-              },
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Text(
-                    "New category? ",
-                    style: TextStyle(fontSize: 12),
-                  ),
-                  Container(
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                  child: CupertinoTextField(
+                    controller:
+                        Provider.of<AddPageViewModel>(context, listen: false)
+                            .titleController,
+                    padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(2),
-                      color: Color(0xffF24E1E),
-                    ),
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: 12,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
-              child: RichText(
-                text: TextSpan(
-                  style: GoogleFonts.poppins(color: Colors.black),
-                  children: [
-                    TextSpan(
-                      text: "Images",
-                    ),
-                    TextSpan(
-                      text: "*",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Carousel(),
-            // Padding(
-            //   padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-            //   child: CupertinoTextField(
-            //     controller:
-            //         Provider.of<AddPageViewModel>(context, listen: false)
-            //             .categorieController,
-            //     padding: EdgeInsets.all(8),
-            //     decoration: BoxDecoration(
-            //       border: Border.all(
-            //         color: Colors.grey[300]!,
-            //       ),
-            //       color: Colors.white,
-            //       borderRadius: BorderRadius.circular(6),
-            //     ),
-            //   ),
-            // ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: width / 3,
-                    child: CupertinoTextField(
-                      controller:
-                          Provider.of<AddPageViewModel>(context, listen: false)
-                              .priceController,
-                      keyboardType: TextInputType.number,
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey[300]!,
-                        ),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(6),
+                      border: Border.all(
+                        color: Colors.grey[300]!,
                       ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(6),
                     ),
                   ),
-                  const Text(
-                    " \$",
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                ),
+                SizedBox(
+                  height: 50,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                    child: Consumer<AddPageViewModel>(
+                        builder: (context, viewModel, child) {
+                      return DropdownButtonFormField(
+                        hint: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Select",
+                          ),
+                        ),
+                        isDense: true,
+                        isExpanded: true,
+                        decoration: InputDecoration(
+                          hintStyle: TextStyle(),
+                          fillColor: Colors.white,
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(6),
+                            borderSide: BorderSide(
+                              style: BorderStyle.solid,
+                              color: Colors.grey[300]!,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(6),
+                            borderSide: BorderSide(
+                              style: BorderStyle.solid,
+                              color: Colors.grey[300]!,
+                            ),
+                          ),
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(6),
+                            borderSide: BorderSide(
+                              style: BorderStyle.solid,
+                              color: Colors.grey[300]!,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(6),
+                            borderSide: BorderSide(
+                              style: BorderStyle.solid,
+                              color: Colors.grey[300]!,
+                            ),
+                          ),
+                        ),
+                        items: viewModel.menuItems,
+                        onChanged: (value) {},
+                      );
+                    }),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8),
+                          topRight: Radius.circular(8),
+                        ),
+                      ),
+                      builder: (context) {
+                        return Consumer<AddPageViewModel>(
+                          builder: (context, viewModel, child) => Padding(
+                            // padding: const EdgeInsets.all(8.0),
+                            padding: MediaQuery.of(context).viewInsets,
+                            child: GestureDetector(
+                              onTap: () {
+                                unFocus(context);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          12, 4, 0, 8),
+                                      child: RichText(
+                                        text: TextSpan(
+                                          style: GoogleFonts.poppins(
+                                              color: Colors.black),
+                                          children: const [
+                                            TextSpan(
+                                              text: "Category",
+                                            ),
+                                            TextSpan(
+                                              text: "*",
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 4, 0, 8),
+                                      child: CupertinoTextField(
+                                        controller:
+                                            Provider.of<AddPageViewModel>(
+                                                    context,
+                                                    listen: false)
+                                                .categoryController,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.grey[300]!,
+                                          ),
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(12, 0, 0, 8),
+                                      child: RichText(
+                                        text: TextSpan(
+                                          style: GoogleFonts.poppins(
+                                              color: Colors.black),
+                                          children: const [
+                                            TextSpan(
+                                              text: "Cover",
+                                            ),
+                                            TextSpan(
+                                              text: "*",
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        viewModel.selectImage(context, "Cover");
+                                      },
+                                      child: Container(
+                                        width: width,
+                                        height: width / 2,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                              color: Colors.grey[300]!,
+                                              style: BorderStyle.solid,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        child: viewModel.coverImage != null
+                                            ? ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                child: Image.file(
+                                                    viewModel.coverImage!),
+                                              )
+                                            : Center(
+                                                child: Text(
+                                                  "+",
+                                                  style: TextStyle(
+                                                    fontSize: 50,
+                                                    color: AppConstants
+                                                        .secondaryColor,
+                                                  ),
+                                                ),
+                                              ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          if (viewModel.categoryController.value
+                                                  .text.isNotEmpty &&
+                                              viewModel.coverImage != null) {
+                                            viewModel.addNewCategory(
+                                                viewModel.categoryController
+                                                    .value.text,
+                                                viewModel.coverImage!);
+                                            Navigator.pop(context);
+                                          } else {
+                                            print(
+                                                "Choose a cover image or type in category title!");
+                                          }
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateColor.resolveWith(
+                                            (states) {
+                                              if (viewModel.categoryController
+                                                      .value.text.isNotEmpty &&
+                                                  viewModel.coverImage !=
+                                                      null) {
+                                                return AppConstants
+                                                    .secondaryColor!;
+                                              } else {
+                                                return Colors.grey[400]!;
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                        child: const Text(
+                                          "Add",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ).whenComplete(() {
+                      Provider.of<AddPageViewModel>(
+                        context,
+                        listen: false,
+                      ).coverImage = null;
+                      Provider.of<AddPageViewModel>(
+                        context,
+                        listen: false,
+                      ).categoryController.text = "";
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Text(
+                        "New category? ",
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(2),
+                          color: Color(0xffF24E1E),
+                        ),
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 12,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                  child: RichText(
+                    text: TextSpan(
+                      style: GoogleFonts.poppins(color: Colors.black),
+                      children: [
+                        TextSpan(
+                          text: "Images",
+                        ),
+                        TextSpan(
+                          text: "*",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
                     ),
-                  )
-                ],
-              ),
+                  ),
+                ),
+                Carousel(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: width / 3,
+                        child: CupertinoTextField(
+                          controller: Provider.of<AddPageViewModel>(context,
+                                  listen: false)
+                              .priceController,
+                          keyboardType: TextInputType.number,
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey[300]!,
+                            ),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                      ),
+                      const Text(
+                        " \$",
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
             ),
-            IconButton(
-              onPressed: () {
-                print(
-                  Provider.of<AddPageViewModel>(context, listen: false)
-                      .titleController
-                      .text,
-                );
-                print(
-                  Provider.of<AddPageViewModel>(context, listen: false)
-                      .categorieController
-                      .text,
-                );
-                print(
-                  Provider.of<AddPageViewModel>(context, listen: false)
-                      .priceController
-                      .text,
-                );
-                print(
-                  Provider.of<UserInfoViewModel>(context, listen: false)
-                      .user
-                      .id,
-                );
-                print(
-                  Provider.of<AddPageViewModel>(context, listen: false)
-                      .nFile!
-                      .path,
-                );
-                posterService.addVideoPoster(
-                    context: context,
-                    title: Provider.of<AddPageViewModel>(context, listen: false)
-                        .titleController
-                        .text,
-                    categorie:
-                        Provider.of<AddPageViewModel>(context, listen: false)
-                            .categorieController
-                            .text,
-                    price: double.parse(
-                        Provider.of<AddPageViewModel>(context, listen: false)
-                            .priceController
-                            .text),
-                    userId:
-                        Provider.of<UserInfoViewModel>(context, listen: false)
-                            .user
-                            .id,
-                    file: Provider.of<AddPageViewModel>(context, listen: false)
-                        .nFile!);
-              },
-              icon: Icon(Icons.radar_outlined),
-            ),
-            IconButton(
-              onPressed: () {
-                posterService.getAllPosters(context: context);
-              },
-              icon: Icon(Icons.send),
-            ),
-            IconButton(
-              onPressed: () async {
-                Provider.of<AddPageViewModel>(context, listen: false)
-                    .pickImage(context);
-              },
-              icon: Icon(
-                Icons.image,
-              ),
-            ),
-            IconButton(
-              onPressed: () {
-                print("Path is " +
+            Positioned(
+              bottom: 10,
+              right: 8,
+              left: 8,
+              child: SizedBox(
+                width: width - 20,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateColor.resolveWith(
+                        (states) => AppConstants.secondaryColor!),
+                  ),
+                  onPressed: () {
                     Provider.of<AddPageViewModel>(context, listen: false)
-                        .imageFile
-                        .path);
-              },
-              icon: Icon(Icons.upload),
-            ),
-            Container(
-              height: 300,
-              width: 300,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.red,
-                  style: BorderStyle.solid,
-                  width: 3,
+                        .addPoster(context: context);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Submit and close"),
                 ),
               ),
-              child: Provider.of<AddPageViewModel>(context).nFile != null
-                  ? Image.file(Provider.of<AddPageViewModel>(context).nFile!)
-                  : Text("S"),
             )
           ],
         ),

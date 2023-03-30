@@ -8,15 +8,27 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:sales_app/core/constants/app_constants.dart';
+import 'package:sales_app/features/category/model/category_model.dart';
+import 'package:sales_app/features/category/services/category_service.dart';
+import 'package:sales_app/features/product/services/poster_service.dart';
+
+import '../../sign_page/view_model/user_info_view_model.dart';
 
 class AddPageViewModel extends ChangeNotifier {
+  CategoryService categoryService = CategoryService();
+  PosterService posterService = PosterService();
+
   TextEditingController titleController = TextEditingController();
-  TextEditingController categorieController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
   TextEditingController priceController = TextEditingController();
 
-  List<File> listOfImages = [];
+  File? coverImage;
 
+  List<File> listOfImages = [];
   List<Widget> carouselWidgets = [];
+  List<DropdownMenuItem> menuItems = [];
+
+  bool menuItemsLoading = false;
 
   int scrollValue = 0;
 
@@ -32,30 +44,53 @@ class AddPageViewModel extends ChangeNotifier {
 
   set pickImageError(dynamic value) => this._pickImageError = value;
 
-  upload() async {
-    File file = File(imageFile!.path);
-    var stream = http.ByteStream(DelegatingStream(file.openRead()));
-
-    var length = await file.length();
-
-    var parsedUri = Uri.parse("$uri/api/addPoster");
-    var request = new http.MultipartRequest("POST", parsedUri);
-
-    var multipartFile = http.MultipartFile("myFile", stream, length,
-        filename: basename(file.path));
-    request.files.add(multipartFile);
-
-    var response = await request.send();
-    print(response.statusCode);
-
-    response.stream.transform(utf8.decoder).listen((value) {
-      print(value);
+  updateCategories() {
+    print("Categories updated");
+    categoryService.getCategories();
+    menuItemsLoading = true;
+    categoryService.listOfCategories.forEach((element) {
+      menuItems.add(
+        DropdownMenuItem(
+          child: Text(
+            element.getTitle,
+          ),
+        ),
+      );
     });
+    print(menuItems.length);
+    menuItemsLoading = false;
+    notifyListeners();
+  }
+
+  addPoster({
+    required BuildContext context,
+  }) {
+    posterService.addPoster(
+      context: context,
+      title: titleController.text,
+      categorie: categoryController.text,
+      price: double.parse(priceController.text),
+      userId: Provider.of<UserInfoViewModel>(context, listen: false).user.id,
+      files: listOfImages,
+    );
   }
 
   updateScrollValue(int value) {
     scrollValue = value;
     notifyListeners();
+  }
+
+  selectImage(BuildContext context, String chosenFor) async {
+    if (chosenFor == "Cover") {
+      final XFile? pickedFile = await _picker.pickImage(
+        source: ImageSource.gallery,
+      );
+
+      imageFile = pickedFile!;
+
+      coverImage = File(imageFile.path);
+      notifyListeners();
+    }
   }
 
   pickImage(BuildContext context) async {
@@ -122,56 +157,45 @@ class AddPageViewModel extends ChangeNotifier {
       }
       print("carousell " + carouselWidgets.length.toString() + 2.toString());
 
-      // carouselWidgets.add(
-      //   Padding(
-      //     padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-      //     child: SizedBox(
-      //       width: width,
-      //       child: Card(
-      //         margin: EdgeInsets.all(8.0),
-      //         shape: RoundedRectangleBorder(
-      //           borderRadius: BorderRadius.circular(10.0),
-      //         ),
-      //         child: ClipRRect(
-      //           borderRadius: BorderRadius.circular(10.0),
-      //           child: Image.file(
-      //             nFile!,
-      //             fit: BoxFit.cover,
-      //           ),
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-      // );
-      carouselWidgets.add(Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10, 0, 30),
-        child: GestureDetector(
-          onTap: () {
-            pickImage(context);
-          },
-          child: Container(
-            width: width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              border: Border.all(
-                  color: Colors.grey[300]!, style: BorderStyle.solid),
-            ),
-            child: Center(
-              child: Text(
-                "+",
-                style: TextStyle(
-                  color: Color(0xffF24E1E),
-                  fontSize: 50,
+      carouselWidgets.add(
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 30),
+          child: GestureDetector(
+            onTap: () {
+              pickImage(context);
+            },
+            child: Container(
+              width: width,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(
+                    color: Colors.grey[300]!, style: BorderStyle.solid),
+              ),
+              child: Center(
+                child: Text(
+                  "+",
+                  style: TextStyle(
+                    color: Color(0xffF24E1E),
+                    fontSize: 50,
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ));
+      );
       listOfImages.add(nFile!);
       notifyListeners();
     } catch (e) {
       pickImageError = e;
     }
+  }
+
+  addNewCategory(String title, File coverImage) {
+    categoryService
+        .addNewCategory(categoryController.value.text, coverImage)
+        .then((value) {
+      updateCategories();
+    });
   }
 }

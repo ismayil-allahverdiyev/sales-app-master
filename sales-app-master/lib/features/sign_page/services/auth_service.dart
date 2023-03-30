@@ -12,6 +12,7 @@ import 'package:sales_app/features/sign_page/view_model/user_info_view_model.dar
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/constants/app_constants.dart';
+import '../../base/view/pages.dart';
 
 class AuthService {
   void signUp(
@@ -95,7 +96,7 @@ class AuthService {
                 .toString());
             Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => HomePageView()),
+                MaterialPageRoute(builder: (context) => Pages()),
                 (route) => false);
           });
     } catch (e) {
