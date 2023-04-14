@@ -36,9 +36,9 @@ class PosterService {
       required String title,
       required List<File> files}) async {
     var request =
-        new http.MultipartRequest("POST", Uri.parse(uri + "/api/addPoster"));
+        http.MultipartRequest("POST", Uri.parse(uri + "/api/addPoster"));
 
-    request.fields["categorie"] = categorie;
+    request.fields["category"] = categorie;
     request.fields["userId"] = userId;
     request.fields["price"] = price.toString();
     request.fields["title"] = title;

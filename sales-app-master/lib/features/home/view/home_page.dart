@@ -7,19 +7,16 @@ import 'package:sales_app/features/addPage/view/add_page_view.dart';
 import 'package:sales_app/features/addVideoPage/view/add_video_view.dart';
 import 'package:sales_app/features/category/view/category_view.dart';
 import 'package:sales_app/features/home/view/carousel.dart';
+import 'package:sales_app/features/home/view/insight.dart';
+import 'package:sales_app/features/home/view_model/home_page_view_model.dart';
 import 'package:sales_app/features/sign_page/view_model/user_info_view_model.dart';
 import 'package:sales_app/features/widgets/custom_bar_app.dart';
 import 'package:sales_app/video_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePageView extends StatefulWidget {
-  const HomePageView({Key? key}) : super(key: key);
+class HomePageView extends StatelessWidget {
+  HomePageView({Key? key}) : super(key: key);
 
-  @override
-  State<HomePageView> createState() => _HomePageViewState();
-}
-
-class _HomePageViewState extends State<HomePageView> {
   CustomAppBar customAppBar = CustomAppBar();
   Object? currentToken;
 
@@ -90,375 +87,25 @@ class _HomePageViewState extends State<HomePageView> {
                 )
               ];
             },
-            body: GridView(
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, childAspectRatio: 0.8),
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            CategoryView(title: "Paintings")));
-                  },
-                  child: Column(
-                    children: [
-                      Stack(
-                        children: [
-                          SizedBox(
-                            height: height / 4,
-                            width: width / 2 - 10,
-                            child: Card(
-                              elevation: 10,
-                              color: Color(0xffEDE6E3),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: Image.asset(
-                                    "assets/images/bird.png",
-                                    fit: BoxFit.fill,
-                                  )),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(4, 4, 0, 0),
-                            child: Container(
-                              height: height / 4 - 8,
-                              width: width / 2 - 18,
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                      colors: [
-                                        Colors.transparent,
-                                        Colors.transparent,
-                                        Colors.transparent,
-                                        Colors.black,
-                                      ],
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter),
-                                  borderRadius: BorderRadius.circular(15)),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 10,
-                            right: 16,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                              child: Row(
-                                children: const [
-                                  Text(
-                                    "Explore ",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                  Icon(
-                                    CupertinoIcons.chevron_right_circle,
-                                    color: Colors.white,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        "Paintings",
-                        style: GoogleFonts.notoSerif(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
-                  children: [
-                    Stack(
-                      children: [
-                        SizedBox(
-                          height: height / 4,
-                          width: width / 2 - 10,
-                          child: Card(
-                            elevation: 10,
-                            color: Color(0xffEDE6E3),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Image.asset(
-                                  "assets/images/native_americans.png",
-                                  fit: BoxFit.fill,
-                                )),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(4, 4, 0, 0),
-                          child: Container(
-                            height: height / 4 - 8,
-                            width: width / 2 - 18,
-                            decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                    colors: [
-                                      Colors.transparent,
-                                      Colors.transparent,
-                                      Colors.transparent,
-                                      Colors.black,
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter),
-                                borderRadius: BorderRadius.circular(15)),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 10,
-                          right: 16,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                            child: Row(
-                              children: const [
-                                Text(
-                                  "Explore ",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                                Icon(
-                                  CupertinoIcons.chevron_right_circle,
-                                  color: Colors.white,
-                                  size: 20,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      "Paintings",
-                      style: GoogleFonts.notoSerif(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Stack(
-                      children: [
-                        SizedBox(
-                          height: height / 4,
-                          width: width / 2 - 10,
-                          child: Card(
-                            elevation: 10,
-                            color: const Color(0xffEDE6E3),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Image.asset(
-                                  "assets/images/trees.png",
-                                  fit: BoxFit.fill,
-                                )),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(4, 4, 0, 0),
-                          child: Container(
-                            height: height / 4 - 8,
-                            width: width / 2 - 18,
-                            decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                    colors: [
-                                      Colors.transparent,
-                                      Colors.transparent,
-                                      Colors.transparent,
-                                      Colors.black,
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter),
-                                borderRadius: BorderRadius.circular(15)),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 10,
-                          right: 16,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                            child: Row(
-                              children: const [
-                                Text(
-                                  "Explore ",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                                Icon(
-                                  CupertinoIcons.chevron_right_circle,
-                                  color: Colors.white,
-                                  size: 20,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      "Paintings",
-                      style: GoogleFonts.notoSerif(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Stack(
-                      children: [
-                        SizedBox(
-                          height: height / 4,
-                          width: width / 2 - 10,
-                          child: Card(
-                            elevation: 10,
-                            color: Color(0xffEDE6E3),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Image.asset(
-                                  "assets/images/whale.png",
-                                  fit: BoxFit.fill,
-                                )),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(4, 4, 0, 0),
-                          child: Container(
-                            height: height / 4 - 8,
-                            width: width / 2 - 18,
-                            decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                    colors: [
-                                      Colors.transparent,
-                                      Colors.transparent,
-                                      Colors.transparent,
-                                      Colors.black,
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter),
-                                borderRadius: BorderRadius.circular(15)),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 10,
-                          right: 16,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                            child: Row(
-                              children: const [
-                                Text(
-                                  "Explore ",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                                Icon(
-                                  CupertinoIcons.chevron_right_circle,
-                                  color: Colors.white,
-                                  size: 20,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      "Accessories",
-                      style: GoogleFonts.notoSerif(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Stack(
-                      children: [
-                        SizedBox(
-                          height: height / 4,
-                          width: width / 2 - 10,
-                          child: Card(
-                            elevation: 10,
-                            color: Color(0xffEDE6E3),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Image.asset(
-                                  "assets/images/bird.png",
-                                  fit: BoxFit.fill,
-                                )),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(4, 4, 0, 0),
-                          child: Container(
-                            height: height / 4 - 8,
-                            width: width / 2 - 18,
-                            decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                    colors: [
-                                      Colors.transparent,
-                                      Colors.transparent,
-                                      Colors.transparent,
-                                      Colors.black,
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter),
-                                borderRadius: BorderRadius.circular(15)),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 10,
-                          right: 16,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                            child: Row(
-                              children: const [
-                                Text(
-                                  "Explore ",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                                Icon(
-                                  CupertinoIcons.chevron_right_circle,
-                                  color: Colors.white,
-                                  size: 20,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      "Paintings",
-                      style: GoogleFonts.notoSerif(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+            body: Consumer<HomePageViewModel>(
+              builder: (context, viewModel, child) {
+                print("Viewmodel called " +
+                    viewModel.listOfCategories.length.toString());
+                if (viewModel.listOfCategories.length != 0) {
+                  return GridView(
+                    physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: (width / 2 - 10) / (width / 3 * 2)),
+                    children: viewModel.listOfCategories,
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
             ),
           ),
         ),

@@ -6,31 +6,31 @@ import '../../search/view/search_view.dart';
 
 class PagesViewModel extends ChangeNotifier {
   int _index = 0;
-  StatefulWidget _page = HomePageView();
+  Container _page = Container(child: HomePageView());
 
   int get index => _index;
 
   set index(int value) {
     _index = value;
     if (_index == 0) {
-      page = const HomePageView();
+      page = Container(child: HomePageView());
     }
     if (_index == 1) {
-      page = const SearchView();
+      page = Container(child: SearchView());
     }
     if (_index == 2) {
-      page = const BasketView();
+      page = Container(child: BasketView());
     }
     if (_index == 3) {
-      page = const ProfileView();
+      page = Container(child: ProfileView());
     }
     print(index);
     notifyListeners();
   }
 
-  StatefulWidget get page => _page;
+  Container get page => _page;
 
-  set page(StatefulWidget value) {
+  set page(Container value) {
     _page = value;
   }
 }

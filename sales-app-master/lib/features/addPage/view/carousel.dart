@@ -24,6 +24,8 @@ class Carousel extends StatelessWidget {
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 30),
                       child: GestureDetector(
                         onTap: () {
+                          Provider.of<AddPageViewModel>(context, listen: false)
+                              .closeCategories;
                           viewModel.pickImage(context);
                         },
                         child: Container(
@@ -73,7 +75,7 @@ class Carousel extends StatelessWidget {
             //     ),
             //   )
             options: CarouselOptions(
-              height: 250.0,
+              height: (width - 40) / 3 * 4,
               enlargeCenterPage: true,
               autoPlay: true,
               aspectRatio: 3,
