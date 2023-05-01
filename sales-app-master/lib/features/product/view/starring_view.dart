@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sales_app/core/constants/app_constants.dart';
 
 class StarringView extends StatefulWidget {
-  const StarringView({Key? key, required this.rate, required this.doubleRate}) : super(key: key);
+  const StarringView({Key? key, required this.rate, required this.doubleRate})
+      : super(key: key);
   final List<Icon> rate;
   final double doubleRate;
 
@@ -11,13 +12,12 @@ class StarringView extends StatefulWidget {
 }
 
 class _StarringViewState extends State<StarringView> {
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -29,12 +29,11 @@ class _StarringViewState extends State<StarringView> {
           children: widget.rate,
         ),
         Text(
-            " ${widget.doubleRate}",
+          " ${widget.doubleRate}",
           style: TextStyle(
-            color: AppConstants.primaryColor,
-            fontSize: 28,
-            fontWeight: FontWeight.bold
-          ),
+              color: AppConstants.primaryColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
         )
       ],
     );

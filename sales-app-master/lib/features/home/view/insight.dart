@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sales_app/features/category/model/category_model.dart';
 
 import '../../category/view/category_view.dart';
+import '../../category/view_model/category_view_model.dart';
 
 class Insight extends StatelessWidget {
   Insight({super.key, required this.category});
@@ -18,8 +20,11 @@ class Insight extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => CategoryView(title: "Paintings")));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          Provider.of<CategoryViewModel>(context, listen: false).isLoaded =
+              false;
+          return CategoryView(category: category);
+        }));
       },
       child: Column(
         children: [

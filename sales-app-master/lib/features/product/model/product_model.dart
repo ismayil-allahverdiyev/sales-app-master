@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 
 class Product {
@@ -8,7 +9,7 @@ class Product {
   String title;
   double price;
   double rate;
-  File? image;
+  List? image;
   List<String>? images;
   List? favs;
 
@@ -18,7 +19,7 @@ class Product {
   Map<String, dynamic> toMap() {
     return {
       "id": id,
-      "categorie": categorie,
+      "category": categorie,
       "userId": userId,
       "title": title,
       "price": price,
@@ -28,15 +29,15 @@ class Product {
     };
   }
 
-  factory Product.fromMap(Map<String, dynamic> map) {
+  factory Product.fromMap(Map<dynamic, dynamic> map) {
     return Product(
       map['id'],
       map['title'],
-      map['price'],
-      map['rate'],
+      double.parse(map['price']),
+      map['rate'] != null ? map['rate'] : 0,
       map['images'],
       map['favs'],
-      map['categorie'],
+      map['category'],
       map['userId'],
       map['image'],
     );

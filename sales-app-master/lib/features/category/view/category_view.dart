@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sales_app/features/category/model/category_model.dart';
 import 'package:sales_app/features/category/view/category_product_view.dart';
+import 'package:sales_app/features/category/view_model/category_view_model.dart';
+import 'package:sales_app/features/search/services/search_service.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../product/model/product_model.dart';
 
-class CategoryView extends StatefulWidget {
-  const CategoryView({Key? key, required this.title}) : super(key: key);
-  final String title;
+class CategoryView extends StatelessWidget {
+  CategoryView({Key? key, required this.category}) : super(key: key);
+  final CategoryModel category;
 
-  @override
-  State<CategoryView> createState() => _CategoryViewState();
-}
-
-class _CategoryViewState extends State<CategoryView> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -43,53 +42,33 @@ class _CategoryViewState extends State<CategoryView> {
           cursorColor: AppConstants.primaryColor,
         ),
       ),
-      body: ListView(
-        children: [
-          CategoryProductView(
-              product: Product(
-                  0,
-                  "Mountain view and beautiful trees with lightining striking the town in the corner!",
-                  27,
-                  5,
-                  ["assets/images/bird.png", "assets/images/whale.png"],
-                  [],
-                  "",
-                  "",
-                  null)),
-          CategoryProductView(
-              product: Product(
-                  0,
-                  "Mountain view and beautiful trees with lightining striking the town in the corner!",
-                  27,
-                  5,
-                  ["assets/images/bird.png", "assets/images/whale.png"],
-                  [],
-                  "",
-                  "",
-                  null)),
-          CategoryProductView(
-              product: Product(
-                  0,
-                  "Mountain view and beautiful trees with lightining striking the town in the corner!",
-                  27,
-                  5,
-                  ["assets/images/bird.png", "assets/images/whale.png"],
-                  [],
-                  "",
-                  "",
-                  null)),
-          CategoryProductView(
-              product: Product(
-                  0,
-                  "Mountain view and beautiful trees with lightining striking the town in the corner!",
-                  27,
-                  5,
-                  ["assets/images/bird.png", "assets/images/whale.png"],
-                  [],
-                  "",
-                  "",
-                  null)),
-        ],
+      body: Consumer<CategoryViewModel>(
+        builder: (context, viewModel, child) {
+          if (!viewModel.isLoaded) {
+            viewModel.getPostersByCategory(category);
+          }
+          return viewModel.isLoaded == false
+              ? CircularProgressIndicator()
+              : ListView.builder(
+                  itemCount: viewModel.listOfProducts.length,
+                  itemBuilder: (context, index) {
+                    print(index);
+                    return Column(
+                      children: [
+                        CategoryProductView(
+                          product: viewModel.listOfProducts[index],
+                        ),
+                        Divider(
+                          color: Colors.grey[300],
+                          endIndent: 16,
+                          indent: 16,
+                          thickness: 2,
+                        )
+                      ],
+                    );
+                  },
+                );
+        },
       ),
     );
   }
