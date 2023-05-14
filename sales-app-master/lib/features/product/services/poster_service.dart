@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:sales_app/core/constants/app_constants.dart';
 import 'package:sales_app/features/product/model/product_model.dart';
+import 'package:sales_app/features/product/services/comment_service.dart';
 
 class PosterService {
   void getAllPosters({

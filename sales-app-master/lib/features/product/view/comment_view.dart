@@ -1,45 +1,54 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sales_app/core/constants/app_constants.dart';
+import 'package:sales_app/features/product/model/comment_model.dart';
 
-class CommentView extends StatefulWidget {
-  const CommentView({Key? key}) : super(key: key);
+class CommentView extends StatelessWidget {
+  Comment comment;
+  CommentView({Key? key, required this.comment}) : super(key: key);
 
-  @override
-  State<CommentView> createState() => _CommentViewState();
-}
-
-class _CommentViewState extends State<CommentView> {
   @override
   Widget build(BuildContext context) {
-
     double width = MediaQuery.of(context).size.width;
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+      padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               CircleAvatar(
-                radius: width*0.05,
-                backgroundColor: Colors.grey,
+                radius: width * 0.05,
+                backgroundColor: Colors.grey[200],
+                backgroundImage: comment.imageUrl != ""
+                    ? NetworkImage(
+                        comment.imageUrl,
+                      )
+                    : null,
+                child: Icon(
+                  CupertinoIcons.person,
+                  color: AppConstants.iconColor,
+                  size: width * 0.05,
+                ),
               ),
-              SizedBox(width: 10,),
+              const SizedBox(
+                width: 10,
+              ),
               Text(
-                "User Userov",
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold
+                comment.username,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               )
             ],
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(4, 4, width/5, 4),
+            padding: EdgeInsets.fromLTRB(4, 4, width / 5, 4),
             child: Text(
-              "I am a comment about a picture it is just so beautiful i am asnotished as hell u haveno idea u know!!!",
-              style: TextStyle(
-                  fontSize: 16
-              ),
+              comment.description,
+              style: TextStyle(fontSize: 16),
             ),
           ),
           Divider(

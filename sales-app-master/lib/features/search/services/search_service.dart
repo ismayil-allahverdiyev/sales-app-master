@@ -21,7 +21,11 @@ class SearchService {
 
     List<Product> res = [];
 
-    decoded.forEach((element) => res.add(Product.fromMap(element)));
+    print("Decoded " + decoded.toString());
+    decoded.forEach((element) {
+      print("Element" + element.toString());
+      res.add(Product.fromMap(element));
+    });
 
     print(res.length);
 

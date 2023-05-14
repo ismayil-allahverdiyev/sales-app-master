@@ -9,12 +9,18 @@ class Product {
   String title;
   double price;
   double rate;
-  List? image;
-  List<String>? images;
+  List<dynamic>? images;
   List? favs;
 
-  Product(this.id, this.title, this.price, this.rate, this.images, this.favs,
-      this.categorie, this.userId, this.image);
+  Product(
+      {required this.id,
+      required this.title,
+      required this.price,
+      required this.rate,
+      this.images,
+      required this.favs,
+      required this.categorie,
+      required this.userId});
 
   Map<String, dynamic> toMap() {
     return {
@@ -30,30 +36,29 @@ class Product {
   }
 
   factory Product.fromMap(Map<dynamic, dynamic> map) {
+    print("fromMap " + map['image'][0].toString());
     return Product(
-      map['id'],
-      map['title'],
-      double.parse(map['price']),
-      map['rate'] != null ? map['rate'] : 0,
-      map['images'],
-      map['favs'],
-      map['category'],
-      map['userId'],
-      map['image'],
+      id: map['_id'],
+      title: map['title'],
+      price: double.parse(map['price']),
+      rate: map['rate'] != null ? map['rate'] : 0,
+      images: map['image'],
+      favs: map['favs'],
+      categorie: map['category'],
+      userId: map['userId'],
     );
   }
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      json['id'],
-      json['title'],
-      json['price'],
-      json['rate'],
-      json['images'],
-      json['favs'],
-      json['categorie'],
-      json['userId'],
-      json['image'],
+      id: json['_id'],
+      title: json['title'],
+      price: double.parse(json['price']),
+      rate: json['rate'] != null ? json['rate'] : 0,
+      images: json['images'],
+      favs: json['favs'],
+      categorie: json['category'],
+      userId: json['userId'],
     );
   }
 

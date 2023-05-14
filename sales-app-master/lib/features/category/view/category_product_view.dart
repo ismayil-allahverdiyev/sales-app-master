@@ -15,6 +15,7 @@ class CategoryProductView extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    print("CategoryProductView " + product.toMap().toString());
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
@@ -25,6 +26,7 @@ class CategoryProductView extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
+                  print("Clicked one is " + product.id);
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ProductView(
                             product: product,
@@ -44,7 +46,7 @@ class CategoryProductView extends StatelessWidget {
                             offset: Offset(2, 2))
                       ],
                       image: DecorationImage(
-                          image: NetworkImage(product.image![0]),
+                          image: NetworkImage(product.images![0]),
                           fit: BoxFit.cover),
                       borderRadius: BorderRadius.circular(15),
                       color: Colors.white),
