@@ -9,7 +9,7 @@ String uri = "https://aisha-sales-app.herokuapp.com";
 class AppConstants {
   static const Color primaryColor = Color(0xff762ec1);
   static const Color iconColor = Color(0xff777DA7);
-  static Color? secondaryColor = Colors.orange[900];
+  static Color? secondaryColor = Color.fromRGBO(230, 81, 0, 1);
 }
 
 unFocus(BuildContext context) {

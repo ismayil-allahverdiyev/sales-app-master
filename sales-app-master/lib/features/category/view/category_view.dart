@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sales_app/features/category/model/category_model.dart';
+import 'package:sales_app/features/category/view/category_product_loading.dart';
 import 'package:sales_app/features/category/view/category_product_view.dart';
 import 'package:sales_app/features/category/view_model/category_view_model.dart';
 import 'package:sales_app/features/search/services/search_service.dart';
@@ -48,7 +49,7 @@ class CategoryView extends StatelessWidget {
             viewModel.getPostersByCategory(category);
           }
           return viewModel.isLoaded == false
-              ? CircularProgressIndicator()
+              ? CategoryProductLoading()
               : ListView.builder(
                   itemCount: viewModel.listOfProducts.length,
                   itemBuilder: (context, index) {

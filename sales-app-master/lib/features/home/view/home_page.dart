@@ -7,6 +7,7 @@ import 'package:sales_app/features/addPage/view/add_page_view.dart';
 import 'package:sales_app/features/addVideoPage/view/add_video_view.dart';
 import 'package:sales_app/features/category/view/category_view.dart';
 import 'package:sales_app/features/home/view/carousel.dart';
+import 'package:sales_app/features/home/view/category_view_loading.dart';
 import 'package:sales_app/features/home/view/insight.dart';
 import 'package:sales_app/features/home/view_model/home_page_view_model.dart';
 import 'package:sales_app/features/sign_page/view_model/user_info_view_model.dart';
@@ -101,9 +102,7 @@ class HomePageView extends StatelessWidget {
                     children: viewModel.listOfCategories,
                   );
                 } else {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return CategoryViewLoading();
                 }
               },
             ),

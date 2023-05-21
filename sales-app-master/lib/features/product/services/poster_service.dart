@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:mime/mime.dart';
 
@@ -26,6 +27,26 @@ class PosterService {
       print("catch");
 
       print(e.toString());
+    }
+  }
+
+  getPosterById({
+    required BuildContext context,
+    required String posterId,
+  }) async {
+    print("Try out");
+    try {
+      print("Trying " + posterId);
+
+      http.Response response = await http.get(
+          Uri.parse(uri + "/api/poster/getPosterById?posterId=" + posterId),
+          headers: <String, String>{
+            "Content-Type": "application/json; charset=UTF-8",
+          });
+      print("Response is " + jsonDecode(response.body).toString());
+      return jsonDecode(response.body);
+    } catch (e) {
+      return e.toString();
     }
   }
 

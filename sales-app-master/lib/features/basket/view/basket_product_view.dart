@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:sales_app/features/basket/models/basket_product_model.dart';
 import 'package:sales_app/features/product/view/product_view.dart';
 
 import '../../product/model/product_model.dart';
 
 class BasketProductView extends StatelessWidget {
-  const BasketProductView({Key? key, required this.product}) : super(key: key);
-  final Product product;
+  const BasketProductView({Key? key, required this.basketProduct})
+      : super(key: key);
+  final BasketProductModel basketProduct;
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +16,12 @@ class BasketProductView extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ProductView(product: product)));
+            print("Navigatiing " + basketProduct.id);
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ProductView(basketProduct: basketProduct),
+              ),
+            );
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,13 +33,15 @@ class BasketProductView extends StatelessWidget {
                   height: 80,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
+                    color: Colors.red,
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      product.images![0],
-                      fit: BoxFit.cover,
-                    ),
+                    // child: Con
+                    // Image.asset(
+                    //   product.images![0],
+                    //   fit: BoxFit.cover,
+                    // ),
                   ),
                 ),
               ),
@@ -44,7 +52,7 @@ class BasketProductView extends StatelessWidget {
                   ),
                   Expanded(
                       child: Text(
-                    product.title,
+                    basketProduct.description,
                     style: TextStyle(fontSize: 18, color: Colors.grey[600]),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -53,7 +61,7 @@ class BasketProductView extends StatelessWidget {
                     width: width / 4,
                   ),
                   Text(
-                    "${product.price}\$",
+                    "${basketProduct.price}\$",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
