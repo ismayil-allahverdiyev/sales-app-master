@@ -1,26 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sales_app/core/constants/app_constants.dart';
+import 'package:sales_app/features/basket/view/basket_product_view.dart';
 import 'package:sales_app/features/basket/view/basket_view_loading.dart';
 import 'package:sales_app/features/basket/view_model/basket_view_model.dart';
 import 'package:sales_app/features/sign_page/view_model/user_info_view_model.dart';
 
-class BasketView extends StatefulWidget {
+class BasketView extends StatelessWidget {
   const BasketView({Key? key}) : super(key: key);
-
-  @override
-  State<BasketView> createState() => _BasketViewState();
-}
-
-class _BasketViewState extends State<BasketView> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    Provider.of<BasketViewModel>(context, listen: false).getProducts(
-      token: Provider.of<UserInfoViewModel>(context, listen: false).user.token,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,9 +84,10 @@ class _BasketViewState extends State<BasketView> {
               child: Text(
                 "Basket",
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.2,
-                    fontSize: 22),
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
+                  fontSize: 22,
+                ),
               ),
             ),
             const SizedBox(
@@ -108,19 +96,14 @@ class _BasketViewState extends State<BasketView> {
             const SizedBox(
               height: 8,
             ),
-            FutureBuilder(
-              future: Provider.of<BasketViewModel>(context, listen: false)
-                  .getProducts(
-                token: Provider.of<UserInfoViewModel>(context).user.token,
-              ),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: BasketViewLoading());
-                } else {
-                  return Column(
-                    children: Provider.of<BasketViewModel>(context).products,
-                  );
-                }
+            Consumer<BasketViewModel>(
+              builder: (context, viewModel, child) {
+                return viewModel.productsLoading
+                    ? const BasketViewLoading()
+                    : Column(
+                        children:
+                            Provider.of<BasketViewModel>(context).products,
+                      );
               },
             ),
           ],

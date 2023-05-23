@@ -11,7 +11,10 @@ class CategoryViewModel extends ChangeNotifier {
 
   List<Product> listOfProducts = [];
   CategoryModel? searchedCategory;
-  bool isLoaded = false;
+
+  bool _isLoaded = false;
+  bool get isLoaded => this._isLoaded;
+  set isLoaded(bool value) => this._isLoaded = value;
 
   getPostersByCategory(CategoryModel category) async {
     print("Getting categories");

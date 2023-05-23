@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sales_app/core/constants/app_constants.dart';
 import 'package:sales_app/features/base/view_model/pages_view_model.dart';
+import 'package:sales_app/features/basket/view_model/basket_view_model.dart';
 import 'package:sales_app/features/home/view/home_page.dart';
 import 'package:sales_app/features/profile/view/profile_view.dart';
+import 'package:sales_app/features/sign_page/view_model/user_info_view_model.dart';
 
 class Pages extends StatelessWidget {
   const Pages({super.key});
@@ -64,6 +66,15 @@ class Pages extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
+                          Provider.of<BasketViewModel>(
+                            context,
+                            listen: false,
+                          ).getProducts(
+                              token: Provider.of<UserInfoViewModel>(
+                                context,
+                                listen: false,
+                              ).user.token,
+                              load: true);
                           viewModel.index = 2;
                         },
                         child: Image(

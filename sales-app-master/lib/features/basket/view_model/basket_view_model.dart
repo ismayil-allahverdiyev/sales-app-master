@@ -20,9 +20,18 @@ class BasketViewModel extends ChangeNotifier {
     _products = value;
   }
 
+  bool _productsLoading = false;
+  bool get productsLoading => this._productsLoading;
+  set productsLoading(bool value) => this._productsLoading = value;
+
   getProducts({
     required String token,
+    required bool load,
   }) async {
+    productsLoading = true;
+    if (load) {
+      notifyListeners();
+    }
     var response = await basketService.getProductsFromBasket(token: token);
     List<BasketProductView> list = [];
     response.forEach((element) {
@@ -30,6 +39,10 @@ class BasketViewModel extends ChangeNotifier {
           basketProduct: BasketProductModel.fromMap(element)));
     });
     _products = list;
+    productsLoading = false;
+    if (load) {
+      notifyListeners();
+    }
   }
 
   addProductToTheBasket({
@@ -82,33 +95,19 @@ class BasketViewModel extends ChangeNotifier {
     try {
       var request = await basketService.removeFromBasket(
           token: token, posterId: posterId);
-      print("Checkeeer after remove the basket");
 
       if (request.statusCode == 400) {
-        // showCustomSnack(
-        //   context: context,
-        //   text: jsonDecode(request.body)["msg"],
-        // );
         return false;
       } else if (request.statusCode == 200 &&
           jsonDecode(request.body)["modifiedCount"] > 0) {
-        // showCustomSnack(
-        //   context: context,
-        //   text: "Poster removed from the basket!",
-        // );
+        getProducts(token: token, load: true);
+
+        notifyListeners();
         return true;
       } else {
-        // showCustomSnack(
-        //   context: context,
-        //   text: "Poster could not be removed from the basket!",
-        // );
         return false;
       }
     } catch (e) {
-      // showCustomSnack(
-      //   context: context,
-      //   text: e.toString(),
-      // );
       return false;
     }
   }

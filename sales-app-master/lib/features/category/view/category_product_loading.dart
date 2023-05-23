@@ -48,7 +48,7 @@ class CategoryProductLoading extends StatelessWidget {
                                   width: width / 6,
                                   color: Colors.white,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 2,
                                 ),
                                 Container(
@@ -56,7 +56,7 @@ class CategoryProductLoading extends StatelessWidget {
                                   width: width / 3,
                                   color: Colors.white,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 2,
                                 ),
                                 Container(
@@ -72,7 +72,7 @@ class CategoryProductLoading extends StatelessWidget {
                     )
                   ],
                 ),
-                Divider(
+                const Divider(
                   color: Colors.white,
                   endIndent: 16,
                   indent: 16,
