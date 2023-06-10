@@ -23,7 +23,7 @@ class SearchService {
 
     print("Decoded " + decoded.toString());
     decoded.forEach((element) {
-      print("Element" + element.toString());
+      // print("Element" + Product.fromMap(element).favs.toString());
       res.add(Product.fromMap(element));
     });
 

@@ -11,14 +11,17 @@ import 'package:sales_app/features/product/view/comment_view_loading.dart';
 import 'package:sales_app/features/product/view/product_view_loading.dart';
 import 'package:sales_app/features/product/view/starring_view.dart';
 import 'package:sales_app/features/product/view_model/product_view_model.dart';
+import 'package:sales_app/features/profile/view_model/profile_view_model.dart';
 import 'package:sales_app/features/sign_page/view_model/user_info_view_model.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'comment_view.dart';
 
 class ProductView extends StatefulWidget {
-  ProductView({Key? key, this.product, this.basketProduct}) : super(key: key);
+  ProductView({Key? key, this.product, this.reloadableProduct})
+      : super(key: key);
   Product? product;
-  BasketProductModel? basketProduct;
+  ReloadableProductModel? reloadableProduct;
 
   @override
   State<ProductView> createState() => _ProductViewState();
@@ -29,29 +32,53 @@ class _ProductViewState extends State<ProductView>
   TabController? tabController;
   bool isFocused = false;
 
+  ProductViewModel? productViewModelProvider;
+  UserInfoViewModel? userInfoViewModelProvider;
+  ProfileViewModel? profileViewModelProvider;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     Provider.of<ProductViewModel>(context, listen: false)
-        .loadThePage(widget.product, context, widget.basketProduct);
-    tabController = TabController(
+        .loadThePage(widget.product, context, widget.reloadableProduct)
+        .then((value) {
+      tabController = TabController(
         length: Provider.of<ProductViewModel>(context, listen: false)
             .currentProduct!
             .images!
             .length,
-        vsync: this);
-
-    tabController?.addListener(() {
-      Provider.of<ProductViewModel>(context, listen: false).currentIndex =
-          tabController!.index;
+        vsync: this,
+      );
+      tabController?.addListener(() {
+        Provider.of<ProductViewModel>(context, listen: false).currentIndex =
+            tabController!.index;
+      });
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    productViewModelProvider =
+        Provider.of<ProductViewModel>(context, listen: false);
+    profileViewModelProvider =
+        Provider.of<ProfileViewModel>(context, listen: false);
+    userInfoViewModelProvider = Provider.of<UserInfoViewModel>(
+      context,
+      listen: false,
+    );
+    super.didChangeDependencies();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
+    productViewModelProvider!.customDispose(
+      token: userInfoViewModelProvider!.user.token,
+      posterId: productViewModelProvider!.currentProduct!.id,
+      profileViewModel: profileViewModelProvider!,
+    );
     super.dispose();
   }
 
@@ -180,21 +207,58 @@ class _ProductViewState extends State<ProductView>
                           child: Container(
                             width: width * 0.1,
                             height: width * 0.1,
-                            child: FittedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Image(
-                                  image: AssetImage("assets/icons/heart.png"),
-                                  color: Provider.of<ProductViewModel>(context,
-                                                  listen: false)
-                                              .currentProduct!
-                                              .favs !=
-                                          []
-                                      ? Colors.grey[700]
-                                      : Colors.red,
-                                ),
-                              ),
-                            ),
+                            child: Consumer<ProductViewModel>(
+                                builder: (context, viewModel, _) {
+                              return viewModel.checkingTheFavourites
+                                  ? Shimmer(
+                                      gradient: LinearGradient(colors: [
+                                        Colors.grey[300]!,
+                                        Colors.grey[200]!,
+                                      ]),
+                                      child: FittedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              viewModel.checkIfFavourited();
+                                            },
+                                            child: Image(
+                                              image: AssetImage(
+                                                  "assets/icons/heart_fill.png"),
+                                              color: viewModel
+                                                          .isFavouritedAtDispose ==
+                                                      false
+                                                  ? Colors.grey[700]
+                                                  : Colors.red,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : FittedBox(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            viewModel.checkIfFavourited();
+                                          },
+                                          child: Image(
+                                            image: AssetImage(
+                                              viewModel.isFavouritedAtDispose ==
+                                                      true
+                                                  ? "assets/icons/heart_fill.png"
+                                                  : "assets/icons/heart.png",
+                                            ),
+                                            color: viewModel
+                                                        .isFavouritedAtDispose ==
+                                                    false
+                                                ? Colors.grey[500]
+                                                : Colors.red,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                            }),
                           ),
                         ),
                       ],
@@ -271,17 +335,6 @@ class _ProductViewState extends State<ProductView>
                                           context: context,
                                         );
                                 },
-                                // style: ButtonStyle(
-                                //   backgroundColor:
-                                //       MaterialStateProperty.resolveWith(
-                                //     (states) => Provider.of<ProductViewModel>(
-                                //                 context,
-                                //                 listen: false)
-                                //             .checkingTheBasket
-                                //         ? Color(0xffFFAF85)
-                                //         : AppConstants.secondaryColor,
-                                //   ),
-                                // ),
                                 child: Card(
                                   color: productViewModel.checkingTheBasket
                                       ? Color(0xffFFAF85)

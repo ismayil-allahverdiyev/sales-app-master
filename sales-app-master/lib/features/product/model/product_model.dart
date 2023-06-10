@@ -36,16 +36,23 @@ class Product {
   }
 
   factory Product.fromMap(Map<dynamic, dynamic> map) {
-    print("fromMap " + map['image'][0].toString());
+    print("fromMap " + (map["image"]).toString());
+    if (map["image"] is List == false) {
+      print("fromMap " + ([map["image"]]).toString());
+    }
     return Product(
-      id: map['_id'],
+      id: map['_id'] != null
+          ? map['_id']
+          : map['id'] != null
+              ? map['id']
+              : "",
       title: map['title'],
       price: double.parse(map['price']),
       rate: map['rate'] != null ? map['rate'] : 0,
-      images: map['image'],
+      images: map['image'] is List ? map['image'] : [map['image']],
       favs: map['favs'],
-      categorie: map['category'],
-      userId: map['userId'],
+      categorie: map['category'] is List ? map['category'] : "",
+      userId: map['userId'] is List ? map['userId'] : "",
     );
   }
 
@@ -55,10 +62,10 @@ class Product {
       title: json['title'],
       price: double.parse(json['price']),
       rate: json['rate'] != null ? json['rate'] : 0,
-      images: json['images'],
+      images: json['image'] is List ? json['image'] : [json['image']],
       favs: json['favs'],
-      categorie: json['category'],
-      userId: json['userId'],
+      categorie: json['category'] is List ? json['category'] : "",
+      userId: json['userId'] is List ? json['userId'] : "",
     );
   }
 

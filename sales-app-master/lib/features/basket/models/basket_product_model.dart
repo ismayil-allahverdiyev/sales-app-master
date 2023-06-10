@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 
-class BasketProductModel {
+class ReloadableProductModel {
   var id;
   String description;
   double price;
 
-  BasketProductModel({
+  ReloadableProductModel({
     required this.id,
     required this.description,
     required this.price,
@@ -21,16 +21,16 @@ class BasketProductModel {
     };
   }
 
-  factory BasketProductModel.fromMap(Map<dynamic, dynamic> map) {
-    return BasketProductModel(
+  factory ReloadableProductModel.fromMap(Map<dynamic, dynamic> map) {
+    return ReloadableProductModel(
       id: map['id'],
       description: map['description'],
       price: double.parse(map['price']),
     );
   }
 
-  factory BasketProductModel.fromJson(Map<String, dynamic> json) {
-    return BasketProductModel(
+  factory ReloadableProductModel.fromJson(Map<String, dynamic> json) {
+    return ReloadableProductModel(
       id: json['id'],
       description: json['description'],
       price: double.parse(json['price']),

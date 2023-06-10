@@ -8,9 +8,9 @@ import 'package:sales_app/features/sign_page/view_model/user_info_view_model.dar
 import '../../product/model/product_model.dart';
 
 class BasketProductView extends StatelessWidget {
-  const BasketProductView({Key? key, required this.basketProduct})
+  const BasketProductView({Key? key, required this.reloadableProduct})
       : super(key: key);
-  final BasketProductModel basketProduct;
+  final ReloadableProductModel reloadableProduct;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,8 @@ class BasketProductView extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ProductView(basketProduct: basketProduct),
+                builder: (context) =>
+                    ProductView(reloadableProduct: reloadableProduct),
               ),
             );
           },
@@ -49,7 +50,7 @@ class BasketProductView extends StatelessWidget {
                       Provider.of<BasketViewModel>(context, listen: false)
                           .removeProductFromBasket(
                         context: context,
-                        posterId: basketProduct.id,
+                        posterId: reloadableProduct.id,
                         token: Provider.of<UserInfoViewModel>(
                           context,
                           listen: false,
@@ -70,7 +71,7 @@ class BasketProductView extends StatelessWidget {
                   ),
                   Expanded(
                       child: Text(
-                    basketProduct.description,
+                    reloadableProduct.description,
                     style: TextStyle(fontSize: 18, color: Colors.grey[600]),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -79,7 +80,7 @@ class BasketProductView extends StatelessWidget {
                     width: width / 4,
                   ),
                   Text(
-                    "${basketProduct.price}\$",
+                    "${reloadableProduct.price}\$",
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),

@@ -1,18 +1,15 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:sales_app/core/constants/app_constants.dart';
-import 'package:sales_app/core/constants/utils.dart';
+import '../../../core/constants/app_constants.dart';
 
-class BasketService {
-  addToBasket({
+class FavouriteService {
+  addToFavourites({
     required String token,
     required String posterId,
   }) async {
     try {
       var request = await http.post(
-        Uri.parse(uri + "/api/basket/addToBasket"),
+        Uri.parse(uri + "/api/addToFavourites"),
         body: jsonEncode({
           "token": token,
           "posterId": posterId,
@@ -21,7 +18,6 @@ class BasketService {
           "Content-Type": "application/json; charset=UTF-8",
         },
       );
-      print("Checkeeer added " + request.body.toString());
 
       return request;
     } catch (e) {
@@ -29,13 +25,13 @@ class BasketService {
     }
   }
 
-  removeFromBasket({
+  removeFromFavourites({
     required String token,
     required String posterId,
   }) async {
     try {
       var request = await http.post(
-        Uri.parse(uri + "/api/basket/removeFromBasket"),
+        Uri.parse(uri + "/api/removeFromFavourites"),
         body: jsonEncode({
           "token": token,
           "posterId": posterId,
@@ -44,7 +40,6 @@ class BasketService {
           "Content-Type": "application/json; charset=UTF-8",
         },
       );
-      print("Checkeeer removed called " + request.body.toString());
 
       return request;
     } catch (e) {
@@ -52,63 +47,47 @@ class BasketService {
     }
   }
 
-  emptyBasket({
-    required String token,
-  }) async {
-    try {
-      var request = await http.post(
-        Uri.parse(uri + "/api/basket/emptyBasket"),
-        body: jsonEncode({
-          "token": token,
-        }),
-        headers: <String, String>{
-          "Content-Type": "application/json; charset=UTF-8",
-        },
-      );
-      print("Checkeeer emptied called " + request.body.toString());
-
-      return request;
-    } catch (e) {
-      return e;
-    }
-  }
-
-  isInTheBasket({
-    required String token,
-    required String posterId,
-  }) async {
-    try {
-      var request = await http.post(
-        Uri.parse(uri + "/api/basket/isInTheBasket"),
-        body: jsonEncode({
-          "token": token,
-          "posterId": posterId,
-        }),
-        headers: <String, String>{
-          "Content-Type": "application/json; charset=UTF-8",
-        },
-      );
-      print("Checkeeer The basket service finished " + request.body);
-      return request;
-    } catch (e) {
-      return e;
-    }
-  }
-
-  getProductsFromBasket({
+  getFavourites({
     required String token,
   }) async {
     try {
       var request = await http.get(
-        Uri.parse(uri + "/api/basket/info?token=" + token),
+        Uri.parse(uri + "/api/getFavourites?token=" + token),
         headers: <String, String>{
           "Content-Type": "application/json; charset=UTF-8",
         },
       );
+      print("getFavourites " + request.body.toString());
       return jsonDecode(request.body);
     } catch (e) {
       print(e);
       return [];
+    }
+  }
+
+  // /api/favourite/isInTheFavourites
+
+  isInTheFavourites({
+    required String token,
+    required String posterId,
+  }) async {
+    try {
+      var request = await http.post(
+        Uri.parse(uri + "/api/favourite/isInTheFavourites"),
+        body: jsonEncode({
+          "token": token,
+          "posterId": posterId,
+        }),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      );
+      if (request.statusCode == 200) {
+        print("Checkeeer The favourite service finished " + request.body);
+        return request;
+      }
+    } catch (e) {
+      return e;
     }
   }
 }

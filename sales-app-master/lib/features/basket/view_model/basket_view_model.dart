@@ -36,7 +36,7 @@ class BasketViewModel extends ChangeNotifier {
     List<BasketProductView> list = [];
     response.forEach((element) {
       list.add(BasketProductView(
-          basketProduct: BasketProductModel.fromMap(element)));
+          reloadableProduct: ReloadableProductModel.fromMap(element)));
     });
     _products = list;
     productsLoading = false;
@@ -54,7 +54,7 @@ class BasketViewModel extends ChangeNotifier {
       var request =
           await basketService.addToBasket(token: token, posterId: posterId);
       print("Checkeeer after addto the basket");
-      if (request.statusCode == 400) {
+      if (request.statusCode == 404) {
         // showCustomSnack(
         //   context: context,
         //   text: jsonDecode(request.body)["msg"],
@@ -96,7 +96,30 @@ class BasketViewModel extends ChangeNotifier {
       var request = await basketService.removeFromBasket(
           token: token, posterId: posterId);
 
-      if (request.statusCode == 400) {
+      if (request.statusCode == 404) {
+        return false;
+      } else if (request.statusCode == 200 &&
+          jsonDecode(request.body)["modifiedCount"] > 0) {
+        getProducts(token: token, load: true);
+
+        notifyListeners();
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+  emptyTheBasket({
+    required BuildContext context,
+    required String token,
+  }) async {
+    try {
+      var request = await basketService.emptyBasket(token: token);
+
+      if (request.statusCode == 404) {
         return false;
       } else if (request.statusCode == 200 &&
           jsonDecode(request.body)["modifiedCount"] > 0) {

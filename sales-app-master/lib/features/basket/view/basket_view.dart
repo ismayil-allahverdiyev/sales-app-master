@@ -73,26 +73,40 @@ class BasketView extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text(
+          "Basket",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.2,
+              fontSize: 22,
+              color: Colors.black),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Provider.of<BasketViewModel>(context, listen: false)
+                  .emptyTheBasket(
+                context: context,
+                token: Provider.of<UserInfoViewModel>(context, listen: false)
+                    .user
+                    .token,
+              );
+            },
+            icon: Icon(
+              Icons.remove,
+              color: Colors.black,
+            ),
+          )
+        ],
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(
           children: [
-            const SizedBox(
-              height: 24,
-            ),
-            const Center(
-              child: Text(
-                "Basket",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2,
-                  fontSize: 22,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 24,
-            ),
             const SizedBox(
               height: 8,
             ),

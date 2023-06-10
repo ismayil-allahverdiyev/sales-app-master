@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sales_app/core/constants/app_constants.dart';
+import 'package:sales_app/features/category/view/category_product_loading.dart';
 import 'package:sales_app/features/category/view/category_product_view.dart';
+import 'package:sales_app/features/home/view/category_view_loading.dart';
 import 'package:sales_app/features/product/model/product_model.dart';
 import 'package:sales_app/features/product/view/product_view.dart';
+import 'package:sales_app/features/sign_page/view_model/user_info_view_model.dart';
 
 import '../view_model/profile_view_model.dart';
 
@@ -22,6 +25,9 @@ class _ProfileViewState extends State<ProfileView>
     super.initState();
     Provider.of<ProfileViewModel>(context, listen: false).tabController =
         TabController(length: 2, vsync: this);
+    Provider.of<ProfileViewModel>(context, listen: false).loadPage(
+      token: Provider.of<UserInfoViewModel>(context, listen: false).user.token,
+    );
   }
 
   @override
@@ -215,133 +221,64 @@ class _ProfileViewState extends State<ProfileView>
             SliverAppBar(
               backgroundColor: Colors.white,
               pinned: true,
-              title:
-                  Consumer<ProfileViewModel>(builder: (context, value, child) {
-                return TabBar(
-                  controller: value.tabController,
-                  labelStyle: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                  labelColor: AppConstants.primaryColor,
-                  unselectedLabelColor: Colors.grey,
-                  indicatorPadding: EdgeInsets.symmetric(horizontal: 60),
-                  unselectedLabelStyle: TextStyle(
-                    color: Colors.grey,
-                  ),
-                  indicatorWeight: 3,
-                  indicatorColor: AppConstants.primaryColor,
-                  tabs: [
-                    Tab(
-                      text: "Bought",
+              title: Consumer<ProfileViewModel>(
+                builder: (context, viewModel, child) {
+                  return TabBar(
+                    controller: viewModel.tabController,
+                    labelStyle: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    labelColor: AppConstants.primaryColor,
+                    unselectedLabelColor: Colors.grey,
+                    indicatorPadding: EdgeInsets.symmetric(horizontal: 60),
+                    unselectedLabelStyle: TextStyle(
+                      color: Colors.grey,
                     ),
-                    Tab(text: "Favourites"),
-                  ],
-                );
-              }),
+                    indicatorWeight: 3,
+                    indicatorColor: AppConstants.primaryColor,
+                    tabs: [
+                      Tab(
+                        text: "Bought",
+                      ),
+                      Tab(text: "Favourites"),
+                    ],
+                  );
+                },
+              ),
             ),
           ],
-          body: Consumer<ProfileViewModel>(builder: (context, value, child) {
-            return TabBarView(
-              controller: value.tabController,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 70),
-                  child: ListView(
-                    shrinkWrap: true,
-                    physics: BouncingScrollPhysics(),
-                    children: [
-                      CategoryProductView(
-                        product: Product(
-                          id: 1,
-                          title: "aaaaaaa",
-                          price: 23,
-                          rate: 3.7,
-                          images: ["assets/images/native_americans.png"],
-                          favs: [],
-                          categorie: "",
-                          userId: "",
-                        ),
-                        bought: true,
-                      ),
-                      CategoryProductView(
-                        product: Product(
-                          id: 1,
-                          title: "aaaaaaa",
-                          price: 23,
-                          rate: 3.7,
-                          images: ["assets/images/native_americans.png"],
-                          favs: [],
-                          categorie: "",
-                          userId: "",
-                        ),
-                        bought: true,
-                      ),
-                      CategoryProductView(
-                        product: Product(
-                          id: 1,
-                          title: "aaaaaaa",
-                          price: 23,
-                          rate: 3.7,
-                          images: ["assets/images/native_americans.png"],
-                          favs: [],
-                          categorie: "",
-                          userId: "",
-                        ),
-                        bought: true,
-                      ),
-                    ],
+          body: Consumer<ProfileViewModel>(
+            builder: (context, viewModel, child) {
+              return TabBarView(
+                controller: viewModel.tabController,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 70),
+                    child: ListView(
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      children: [],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 70),
-                  child: ListView(
-                    shrinkWrap: true,
-                    physics: BouncingScrollPhysics(),
-                    children: [
-                      CategoryProductView(
-                        product: Product(
-                          id: 1,
-                          title: "aaaaaaa",
-                          price: 23,
-                          rate: 3.7,
-                          images: ["assets/images/native_americans.png"],
-                          favs: [],
-                          categorie: "",
-                          userId: "",
-                        ),
-                        bought: true,
-                      ),
-                      CategoryProductView(
-                        product: Product(
-                          id: 1,
-                          title: "aaaaaaa",
-                          price: 23,
-                          rate: 3.7,
-                          images: ["assets/images/native_americans.png"],
-                          favs: [],
-                          categorie: "",
-                          userId: "",
-                        ),
-                        bought: true,
-                      ),
-                      CategoryProductView(
-                        product: Product(
-                          id: 1,
-                          title: "aaaaaaa",
-                          price: 23,
-                          rate: 3.7,
-                          images: ["assets/images/native_americans.png"],
-                          favs: [],
-                          categorie: "",
-                          userId: "",
-                        ),
-                        bought: true,
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 70),
+                    child: viewModel.favsIsLoading
+                        ? const CategoryProductLoading()
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: viewModel.favourites.length,
+                            itemBuilder: (context, index) {
+                              return CategoryProductView(
+                                product: viewModel.favourites[index],
+                                isReloadable: true,
+                              );
+                            },
+                          ),
                   ),
-                ),
-              ],
-            );
-          }),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

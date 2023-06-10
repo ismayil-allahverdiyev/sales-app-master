@@ -9,7 +9,9 @@ import 'package:sales_app/core/constants/utils.dart';
 import 'package:sales_app/features/basket/models/basket_product_model.dart';
 import 'package:sales_app/features/basket/services/basket_service.dart';
 import 'package:sales_app/features/product/model/product_model.dart';
+import 'package:sales_app/features/product/services/favourite_service.dart';
 import 'package:sales_app/features/product/services/poster_service.dart';
+import 'package:sales_app/features/profile/view_model/profile_view_model.dart';
 import 'package:sales_app/features/sign_page/model/user.dart';
 import 'package:sales_app/features/sign_page/view_model/user_info_view_model.dart';
 
@@ -20,7 +22,14 @@ class ProductViewModel extends ChangeNotifier {
   CommentService commentService = CommentService();
   BasketService basketService = BasketService();
   PosterService posterService = PosterService();
+  FavouriteService favouriteService = FavouriteService();
   TextEditingController commentController = TextEditingController();
+
+  bool isFavouritedAtDispose = false;
+
+  bool _checkingTheFavourites = false;
+  bool get checkingTheFavourites => this._checkingTheFavourites;
+  set checkingTheFavourites(bool value) => this._checkingTheFavourites = value;
 
   Product? currentProduct;
   Product? get getCurrentProduct => this.currentProduct;
@@ -31,6 +40,10 @@ class ProductViewModel extends ChangeNotifier {
   bool get getProductIsLoading => this.productIsLoading;
   set setProductIsLoading(bool productIsLoading) =>
       this.productIsLoading = productIsLoading;
+
+  bool _inTheFavourites = false;
+  bool get inTheFavourites => this._inTheFavourites;
+  set inTheFavourites(bool value) => this._inTheFavourites = value;
 
   bool _inTheBasket = false;
   bool get inTheBasket => this._inTheBasket;
@@ -175,24 +188,33 @@ class ProductViewModel extends ChangeNotifier {
   }
 
   loadThePage(Product? product, BuildContext context,
-      BasketProductModel? basketProduct) {
+      ReloadableProductModel? reloadableProduct) async {
     setProductIsLoading = true;
     controller = ScrollController();
     commentController = TextEditingController();
 
-    if (basketProduct != null) {
-      print("basketProduct id is " + basketProduct.id);
-      getTheProduct(context: context, posterId: basketProduct.id);
+    if (reloadableProduct != null) {
+      print("reloadableProduct id is " + reloadableProduct.id);
+      await getTheProduct(context: context, posterId: reloadableProduct.id)
+          .then((value) {
+        setImageWidgets(currentProduct!.images!);
+        ratingSystem(currentProduct!.rate);
+        getComments(posterId: currentProduct!.id);
+        checkIfInTheBasket(context: context, posterId: currentProduct!.id);
+        print("checkingTheFavourites started");
+        checkIfInTheFavourites(context: context, posterId: currentProduct!.id);
+      });
     } else {
       currentProduct = product;
       setProductIsLoading = false;
-      notifyListeners();
+      setImageWidgets(currentProduct!.images!);
+      ratingSystem(currentProduct!.rate);
+      getComments(posterId: currentProduct!.id);
+      checkIfInTheBasket(context: context, posterId: currentProduct!.id);
+      print("checkingTheFavourites started");
+      checkIfInTheFavourites(context: context, posterId: currentProduct!.id);
+      // notifyListeners();
     }
-
-    setImageWidgets(currentProduct!.images!);
-    ratingSystem(currentProduct!.rate);
-    getComments(posterId: currentProduct!.id);
-    checkIfInTheBasket(context: context, posterId: currentProduct!.id);
   }
 
   addProductToTheBasket({
@@ -201,37 +223,22 @@ class ProductViewModel extends ChangeNotifier {
     required String token,
   }) async {
     try {
+      _checkingTheBasket = true;
+      notifyListeners();
       var request =
           await basketService.addToBasket(token: token, posterId: posterId);
       print("Checkeeer after remove the basket");
 
-      if (request.statusCode == 400) {
-        // showCustomSnack(
-        //   context: context,
-        //   text: jsonDecode(request.body)["msg"],
-        // );
+      if (request.statusCode == 404) {
         return false;
       } else if (request.statusCode == 200 &&
           jsonDecode(request.body)["modifiedCount"] > 0) {
-        // showCustomSnack(
-        //   context: context,
-        //   text: "Poster removed from the basket!",
-        // );
         checkIfInTheBasket(context: context, posterId: posterId);
-
         return true;
       } else {
-        // showCustomSnack(
-        //   context: context,
-        //   text: "Poster could not be removed from the basket!",
-        // );
         return false;
       }
     } catch (e) {
-      // showCustomSnack(
-      //   context: context,
-      //   text: e.toString(),
-      // );
       return false;
     }
   }
@@ -242,37 +249,22 @@ class ProductViewModel extends ChangeNotifier {
     required String token,
   }) async {
     try {
+      _checkingTheBasket = true;
+      notifyListeners();
       var request = await basketService.removeFromBasket(
           token: token, posterId: posterId);
       print("Checkeeer after remove the basket");
 
-      if (request.statusCode == 400) {
-        // showCustomSnack(
-        //   context: context,
-        //   text: jsonDecode(request.body)["msg"],
-        // );
+      if (request.statusCode == 404) {
         return false;
       } else if (request.statusCode == 200 &&
           jsonDecode(request.body)["modifiedCount"] > 0) {
-        // showCustomSnack(
-        //   context: context,
-        //   text: "Poster removed from the basket!",
-        // );
         checkIfInTheBasket(context: context, posterId: posterId);
-
         return true;
       } else {
-        // showCustomSnack(
-        //   context: context,
-        //   text: "Poster could not be removed from the basket!",
-        // );
         return false;
       }
     } catch (e) {
-      // showCustomSnack(
-      //   context: context,
-      //   text: e.toString(),
-      // );
       return false;
     }
   }
@@ -283,32 +275,105 @@ class ProductViewModel extends ChangeNotifier {
   }) async {
     inTheBasket = false;
     _checkingTheBasket = true;
-    notifyListeners();
+    // notifyListeners();
     String token =
         Provider.of<UserInfoViewModel>(context, listen: false).user.token;
     Response response =
         await basketService.isInTheBasket(token: token, posterId: posterId);
-    print(
-        "Checkeeer after checking is in the basket" + response.body.toString());
     if (response.statusCode == 200) {
       if (jsonDecode(response.body)["msg"] == "Poster is in the basket!") {
         inTheBasket = true;
-        notifyListeners();
+        // notifyListeners();
       } else if (jsonDecode(response.body)["msg"] ==
           "Poster is not in the basket!") {
         inTheBasket = false;
-        notifyListeners();
+        // notifyListeners();
       }
     } else if (response.statusCode == 500) {
-      showCustomSnack(
-        context: context,
-        text: "There was an error is " + jsonDecode(response.body)["error"],
-      );
       inTheBasket = false;
-      notifyListeners();
+      // notifyListeners();
     }
     _checkingTheBasket = false;
     notifyListeners();
+  }
+
+  checkIfFavourited() {
+    if (!checkingTheFavourites) {
+      isFavouritedAtDispose = !isFavouritedAtDispose;
+      notifyListeners();
+    }
+  }
+
+  checkIfInTheFavourites({
+    required BuildContext context,
+    required String posterId,
+  }) async {
+    inTheFavourites = false;
+    _checkingTheFavourites = true;
+    String token =
+        Provider.of<UserInfoViewModel>(context, listen: false).user.token;
+    Response response = await favouriteService.isInTheFavourites(
+        token: token, posterId: posterId);
+    if (response.statusCode == 200) {
+      if (jsonDecode(response.body)["inFavourites"] == true) {
+        inTheFavourites = true;
+        isFavouritedAtDispose = true;
+      } else if (jsonDecode(response.body)["inFavourites"] == false) {
+        inTheFavourites = false;
+        isFavouritedAtDispose = false;
+      }
+    } else if (response.statusCode == 500) {
+      inTheFavourites = false;
+    }
+    _checkingTheFavourites = false;
+    notifyListeners();
+    print("checkingTheFavourites = " + checkingTheFavourites.toString());
+  }
+
+  addProductToFavourites({
+    required String posterId,
+    required String token,
+  }) async {
+    try {
+      var request = await favouriteService.addToFavourites(
+        token: token,
+        posterId: posterId,
+      );
+
+      if (request.statusCode == 404) {
+        return false;
+      } else if (request.statusCode == 200 &&
+          jsonDecode(request.body)["modifiedCount"] > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+  removeProductFromFavourites({
+    required String posterId,
+    required String token,
+  }) async {
+    try {
+      var request = await favouriteService.removeFromFavourites(
+        token: token,
+        posterId: posterId,
+      );
+
+      if (request.statusCode == 404) {
+        return false;
+      } else if (request.statusCode == 200 &&
+          jsonDecode(request.body)["modifiedCount"] > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
   }
 
   void scrollDown() {
@@ -341,5 +406,31 @@ class ProductViewModel extends ChangeNotifier {
     print("Body is product now");
     productIsLoading = false;
     notifyListeners();
+  }
+
+  void customDispose({
+    required String posterId,
+    required String token,
+    required ProfileViewModel profileViewModel,
+  }) async {
+    print("At dispose " +
+        inTheFavourites.toString() +
+        "/" +
+        isFavouritedAtDispose.toString());
+    if (inTheFavourites != isFavouritedAtDispose) {
+      if (isFavouritedAtDispose) {
+        addProductToFavourites(
+          posterId: posterId,
+          token: token,
+        );
+      } else {
+        await removeProductFromFavourites(
+          posterId: posterId,
+          token: token,
+        ).then((value) {
+          profileViewModel.gettingFavourites(token: token);
+        });
+      }
+    }
   }
 }
