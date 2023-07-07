@@ -4,13 +4,36 @@ import 'dart:io';
 
 class Product {
   var id;
+  get getId => this.id;
+  set setId(var id) => this.id = id;
+
   String userId;
+  get getUserId => this.userId;
+  set setUserId(userId) => this.userId = userId;
+
   String categorie;
+  get getCategorie => this.categorie;
+  set setCategorie(categorie) => this.categorie = categorie;
+
   String title;
+  get getTitle => this.title;
+  set setTitle(title) => this.title = title;
+
   double price;
+  get getPrice => this.price;
+  set setPrice(price) => this.price = price;
+
   double rate;
+  get getRate => this.rate;
+  set setRate(rate) => this.rate = rate;
+
   List<dynamic>? images;
+  get getImages => this.images;
+  set setImages(images) => this.images = images;
+
   List? favs;
+  get getFavs => this.favs;
+  set setFavs(favs) => this.favs = favs;
 
   Product(
       {required this.id,
@@ -36,10 +59,6 @@ class Product {
   }
 
   factory Product.fromMap(Map<dynamic, dynamic> map) {
-    print("fromMap " + (map["image"]).toString());
-    if (map["image"] is List == false) {
-      print("fromMap " + ([map["image"]]).toString());
-    }
     return Product(
       id: map['_id'] != null
           ? map['_id']

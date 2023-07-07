@@ -89,7 +89,7 @@ class Insight extends StatelessWidget {
           ),
           Text(
             category.getTitle,
-            style: GoogleFonts.notoSerif(
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),

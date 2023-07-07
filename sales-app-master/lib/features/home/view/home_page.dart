@@ -65,21 +65,18 @@ class HomePageView extends StatelessWidget {
                       bottomRight: Radius.circular(width * 0.15),
                     ),
                   ),
-                  expandedHeight: 420,
-                  flexibleSpace: FlexibleSpaceBar(
+                  expandedHeight: 410,
+                  flexibleSpace: const FlexibleSpaceBar(
                     collapseMode: CollapseMode.none,
-                    background: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-                      child: CarouselWidget(),
-                    ),
+                    background: CarouselWidget(),
                   ),
                 ),
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 10, 8, 0),
+                    padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
                     child: Text(
                       "Shop insights",
-                      style: GoogleFonts.notoSerif(
+                      style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
                       ),
@@ -90,8 +87,6 @@ class HomePageView extends StatelessWidget {
             },
             body: Consumer<HomePageViewModel>(
               builder: (context, viewModel, child) {
-                print("Viewmodel called " +
-                    viewModel.listOfCategories.length.toString());
                 if (viewModel.listOfCategories.length != 0) {
                   return GridView(
                     physics: const BouncingScrollPhysics(),

@@ -45,7 +45,7 @@ class CategoryService {
     return false;
   }
 
-  Future<List<CategoryModel>> getCategories() async {
+  getCategories() async {
     try {
       var request = await http
           .get(Uri.parse("$uri/categories"), headers: <String, String>{
@@ -57,9 +57,10 @@ class CategoryService {
       categories.forEach((element) {
         listOfCategories.add(CategoryModel.fromMap(element));
       });
-      return listOfCategories;
+
+      return categories;
     } catch (e) {
-      return listOfCategories;
+      print(e.toString());
     }
   }
 }

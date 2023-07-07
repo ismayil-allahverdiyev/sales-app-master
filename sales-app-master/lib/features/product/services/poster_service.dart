@@ -11,21 +11,14 @@ import 'package:sales_app/features/product/model/product_model.dart';
 import 'package:sales_app/features/product/services/comment_service.dart';
 
 class PosterService {
-  void getAllPosters({
-    required BuildContext context,
-  }) async {
-    print("Try out");
+  getAllPosters() async {
     try {
-      print("Try");
-
       http.Response response = await http
           .get(Uri.parse(uri + "/api/getAllPosters"), headers: <String, String>{
         "Content-Type": "application/json; charset=UTF-8",
       });
-      print(response.body);
+      return jsonDecode(response.body);
     } catch (e) {
-      print("catch");
-
       print(e.toString());
     }
   }
@@ -34,10 +27,7 @@ class PosterService {
     required BuildContext context,
     required String posterId,
   }) async {
-    print("Try out");
     try {
-      print("Trying " + posterId);
-
       http.Response response = await http.get(
           Uri.parse(uri + "/api/poster/getPosterById?posterId=" + posterId),
           headers: <String, String>{

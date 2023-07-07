@@ -25,7 +25,6 @@ class CategoryProductView extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    print("CategoryProductView " + product.toMap().toString());
 
     return Consumer2<ProductViewModel, ProfileViewModel>(
         builder: (context, productViewModel, profileViewModel, child) {

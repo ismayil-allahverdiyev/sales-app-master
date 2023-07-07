@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:sales_app/features/category/model/category_model.dart';
 import 'package:sales_app/features/category/services/category_service.dart';
 import 'package:sales_app/features/home/view/insight.dart';
 
@@ -28,8 +29,9 @@ class HomePageViewModel extends ChangeNotifier {
 
     await categoryService.getCategories().then((value) {
       for (var element in value) {
-        if (element.count > 0) {
-          listOfCategories.add(Insight(category: element));
+        if (element["count"] > 0) {
+          listOfCategories
+              .add(Insight(category: CategoryModel.fromMap(element)));
         }
       }
     });

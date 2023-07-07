@@ -23,7 +23,6 @@ class _AddVideoViewState extends State<AddVideoView> {
   @override
   Widget build(BuildContext context) {
     PosterService posterService = PosterService();
-    posterService.getAllPosters(context: context);
 
     @override
     void initState() {

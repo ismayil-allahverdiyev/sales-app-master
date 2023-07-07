@@ -18,17 +18,30 @@ class SearchService {
     );
 
     List decoded = jsonDecode(response.body);
-
     List<Product> res = [];
 
-    print("Decoded " + decoded.toString());
     decoded.forEach((element) {
-      // print("Element" + Product.fromMap(element).favs.toString());
       res.add(Product.fromMap(element));
     });
-
-    print(res.length);
-
     return res;
+  }
+
+  Future filteredSearch({
+    //needs fixing
+    required String token,
+    required List<String> categories,
+    required String keyword,
+    required int minPrice,
+    required int maxPrice,
+  }) async {
+    try {
+      var request = await http.get(
+        Uri.parse(uri + "/api/filteredSearch?token=" + token),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      );
+      return jsonDecode(request.body);
+    } catch (e) {}
   }
 }
