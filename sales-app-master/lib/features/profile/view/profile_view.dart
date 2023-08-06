@@ -96,74 +96,35 @@ class _ProfileViewState extends State<ProfileView>
                                 context: context,
                                 builder: (context) {
                                   return Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          width: width / 5 * 4,
-                                          // height: width / 7 * 2 + 32,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            color: Colors.white,
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Container(
-                                                  height: width / 7,
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: Colors.grey[300]!,
-                                                      style: BorderStyle.solid,
-                                                      width: 1,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4),
-                                                  ),
-                                                  child: Padding(
+                                    child: Material(
+                                      child: Consumer<ProfileViewModel>(
+                                          builder: (context, viewModel, _) {
+                                        return Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: width / 5 * 4,
+                                              // height: width / 7 * 2 + 32,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                color: Colors.white,
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Padding(
                                                     padding:
                                                         const EdgeInsets.all(
                                                             8.0),
-                                                    child: Row(
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(4.0),
-                                                          child: Icon(
-                                                              Icons.camera),
-                                                        ),
-                                                        Expanded(
-                                                          child: Text(
-                                                            "Change profile picture",
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Container(
+                                                    child: Container(
+                                                      height: width / 7,
                                                       decoration: BoxDecoration(
-                                                        color: AppConstants
-                                                            .secondaryColor,
                                                         border: Border.all(
-                                                          color: AppConstants
-                                                              .secondaryColor!,
+                                                          color:
+                                                              Colors.grey[300]!,
                                                           style:
                                                               BorderStyle.solid,
                                                           width: 1,
@@ -176,35 +137,94 @@ class _ProfileViewState extends State<ProfileView>
                                                         padding:
                                                             const EdgeInsets
                                                                 .all(8.0),
-                                                        child: Center(
-                                                          child: Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons
-                                                                    .exit_to_app,
-                                                                color: Colors
-                                                                    .white,
+                                                        child: Row(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(4.0),
+                                                              child: Icon(
+                                                                  Icons.camera),
+                                                            ),
+                                                            Expanded(
+                                                              child: Text(
+                                                                "Change profile picture",
                                                               ),
-                                                              Text(
-                                                                " Sign out",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        InkWell(
+                                                          onTap: () {
+                                                            viewModel.signOut(
+                                                                context:
+                                                                    context);
+                                                          },
+                                                          child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: AppConstants
+                                                                  .secondaryColor,
+                                                              border:
+                                                                  Border.all(
+                                                                color: AppConstants
+                                                                    .secondaryColor!,
+                                                                style:
+                                                                    BorderStyle
+                                                                        .solid,
+                                                                width: 1,
+                                                              ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          4),
+                                                            ),
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Center(
+                                                                child: Row(
+                                                                  children: [
+                                                                    Icon(
+                                                                      Icons
+                                                                          .exit_to_app,
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                    Text(
+                                                                      " Sign out",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
+                                            ),
+                                          ],
+                                        );
+                                      }),
                                     ),
                                   );
                                 },

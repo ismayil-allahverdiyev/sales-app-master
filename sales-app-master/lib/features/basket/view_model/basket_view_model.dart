@@ -55,32 +55,28 @@ class BasketViewModel extends ChangeNotifier {
           await basketService.addToBasket(token: token, posterId: posterId);
       print("Checkeeer after addto the basket");
       if (request.statusCode == 404) {
-        // showCustomSnack(
-        //   context: context,
-        //   text: jsonDecode(request.body)["msg"],
-        // );
+        showCustomSnack(
+          text: jsonDecode(request.body)["msg"],
+        );
         return false;
       } else if (request.statusCode == 200 &&
           jsonDecode(request.body)["modifiedCount"] > 0) {
-        // showCustomSnack(
-        //   context: context,
-        //   text: "Poster added to the basket!",
-        // );
+        showCustomSnack(
+          text: "Poster added to the basket!",
+        );
 
         return true;
       } else {
-        // showCustomSnack(
-        //   context: context,
-        //   text: "Poster not added to the basket!",
-        // );
+        showCustomSnack(
+          text: "Poster not added to the basket!",
+        );
 
         return false;
       }
     } catch (e) {
-      // showCustomSnack(
-      //   context: context,
-      //   text: e.toString(),
-      // );
+      showCustomSnack(
+        text: e.toString(),
+      );
       Provider.of<ProductViewModel>(context, listen: false).checkingTheBasket;
 
       return false;

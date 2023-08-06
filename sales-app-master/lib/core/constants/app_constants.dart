@@ -5,6 +5,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 
 String uri = "https://aisha-sales-app.herokuapp.com";
+final GlobalKey<ScaffoldMessengerState> snackbarKey =
+    GlobalKey<ScaffoldMessengerState>();
 
 class AppConstants {
   static const Color primaryColor = Color(0xff762ec1);

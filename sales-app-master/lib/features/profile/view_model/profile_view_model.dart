@@ -2,13 +2,19 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sales_app/features/product/model/product_model.dart';
 import 'package:sales_app/features/product/services/favourite_service.dart';
+import 'package:sales_app/features/sign_page/model/user.dart';
+import 'package:sales_app/features/sign_page/services/auth_service.dart';
+import 'package:sales_app/features/sign_page/view/sign_view.dart';
 
 import '../../category/view/category_product_view.dart';
+import '../../sign_page/view_model/user_info_view_model.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   FavouriteService favouriteService = FavouriteService();
+  AuthService authService = AuthService();
   List<Product> favourites = [];
 
   bool _pageIsLoading = false;
@@ -61,5 +67,15 @@ class ProfileViewModel extends ChangeNotifier {
     pageIsLoading = true;
     gettingFavourites(token: token);
     pageIsLoading = false;
+  }
+
+  signOut({required BuildContext context}) {
+    Provider.of<UserInfoViewModel>(context, listen: false).signOut();
+    print(Provider.of<UserInfoViewModel>(context, listen: false).toString());
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => SignView()),
+      (route) => false,
+    );
   }
 }

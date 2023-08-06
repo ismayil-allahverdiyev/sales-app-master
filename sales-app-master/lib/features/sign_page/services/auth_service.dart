@@ -43,10 +43,8 @@ class AuthService {
 
       errorHandler(
           response: response,
-          context: context,
           onSuccess: () {
             showCustomSnack(
-                context: context,
                 text:
                     "Account created! You can login with the same credentials.");
           });
@@ -54,7 +52,7 @@ class AuthService {
       print(3);
     } catch (e) {
       print("error 1");
-      showCustomSnack(context: context, text: e.toString());
+      showCustomSnack(text: e.toString());
     }
   }
 
@@ -83,9 +81,8 @@ class AuthService {
 
       errorHandler(
           response: response,
-          context: context,
           onSuccess: () async {
-            showCustomSnack(context: context, text: "Signed In!");
+            showCustomSnack(text: "Signed In!");
             SharedPreferences prefs = await SharedPreferences.getInstance();
             await prefs.setString(
                 "x-auth-token", jsonDecode(response.body)["token"]);
@@ -95,12 +92,13 @@ class AuthService {
             print(Provider.of<UserInfoViewModel>(context, listen: false)
                 .toString());
             Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => Pages()),
-                (route) => false);
+              context,
+              MaterialPageRoute(builder: (context) => Pages()),
+              (route) => false,
+            );
           });
     } catch (e) {
-      showCustomSnack(context: context, text: e.toString());
+      showCustomSnack(text: e.toString());
     }
   }
 
@@ -140,7 +138,7 @@ class AuthService {
             " 12 BB");
       }
     } catch (e) {
-      showCustomSnack(context: context, text: e.toString());
+      showCustomSnack(text: e.toString());
     }
   }
 }

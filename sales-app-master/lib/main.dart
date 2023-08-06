@@ -32,6 +32,7 @@ void main() {
     ],
     child: MaterialApp(
       debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: snackbarKey,
       theme: ThemeData(
         fontFamily: "Poppins",
       ),

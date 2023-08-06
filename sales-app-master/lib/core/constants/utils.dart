@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'app_constants.dart';
 
-void showCustomSnack({required BuildContext context, required String text}){
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
+void showCustomSnack({required String text}) {
+  snackbarKey.currentState?.showSnackBar(SnackBar(content: Text(text)));
 }

@@ -386,7 +386,7 @@ class AddPageViewModel extends ChangeNotifier {
         priceController.text != "") {
       return true;
     } else {
-      showCustomSnack(context: context, text: "One or more fields are empty!");
+      showCustomSnack(text: "One or more fields are empty!");
       return false;
     }
   }
