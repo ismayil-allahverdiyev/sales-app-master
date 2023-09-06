@@ -1,15 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sales_app/features/product/model/product_model.dart';
 import 'package:sales_app/features/product/services/favourite_service.dart';
-import 'package:sales_app/features/sign_page/model/user.dart';
 import 'package:sales_app/features/sign_page/services/auth_service.dart';
 import 'package:sales_app/features/sign_page/view/sign_view.dart';
-
-import '../../category/view/category_product_view.dart';
 import '../../sign_page/view_model/user_info_view_model.dart';
 
 class ProfileViewModel extends ChangeNotifier {

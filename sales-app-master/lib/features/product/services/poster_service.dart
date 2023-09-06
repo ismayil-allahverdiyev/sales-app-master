@@ -7,6 +7,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:sales_app/core/constants/app_constants.dart';
+import 'package:sales_app/features/product/model/color_model.dart';
 import 'package:sales_app/features/product/model/product_model.dart';
 import 'package:sales_app/features/product/services/comment_service.dart';
 
@@ -40,20 +41,37 @@ class PosterService {
     }
   }
 
-  void addPoster(
-      {required BuildContext context,
-      required String userId,
-      required String categorie,
-      required double price,
-      required String title,
-      required List<File> files}) async {
+  void addPoster({
+    required BuildContext context,
+    required String userId,
+    required String categorie,
+    required double price,
+    required String token,
+    required String title,
+    required List<File> files,
+    required List<PosterColor> posterColors,
+  }) async {
     var request =
         http.MultipartRequest("POST", Uri.parse(uri + "/api/addPoster"));
 
     request.fields["category"] = categorie;
-    request.fields["userId"] = userId;
     request.fields["price"] = price.toString();
     request.fields["title"] = title;
+    request.fields["token"] = token;
+    var colors = {};
+
+    for (int i = 0; i < posterColors.length; i++) {
+      request.fields["colorPalette[$i][colorName]"] =
+          posterColors[i].colorName.toString();
+      request.fields["colorPalette[$i][hexCode]"] = posterColors[i]
+          .hexCode
+          .substring(10, posterColors[i].hexCode.length - 1);
+
+      // colors.addAll({"colorPalette[$i]": {
+      //   "colorName": posterColors[i].colorName,
+      //   "hexCode": posterColors[i].hexCode,
+      // }});
+    }
 
     var mimeType;
     var val;
@@ -70,7 +88,9 @@ class PosterService {
     print(request.files);
 
     request.send().then((response) {
-      if (response.statusCode == 200) print("Uploaded!");
+      if (response.statusCode == 200)
+        print("Uploaded! " + response.stream.toString());
+      print("Uploaded! rest" + response.stream.toString());
     });
   }
 

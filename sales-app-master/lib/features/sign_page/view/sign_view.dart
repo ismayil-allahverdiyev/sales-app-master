@@ -2,9 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sales_app/core/constants/app_constants.dart';
-import 'package:sales_app/features/sign_page/services/auth_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../view_model/user_info_view_model.dart';
 
 class SignView extends StatelessWidget {
@@ -30,7 +27,7 @@ class SignView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Logo"),
+                const Text("Logo"),
                 viewModel.isSignUpOn
                     ? Padding(
                         padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
@@ -66,46 +63,11 @@ class SignView extends StatelessWidget {
                         ),
                       )
                     : Container(),
-                GestureDetector(
-                  onTap: () {
-                    if (viewModel.isSignUpOn) {
-                    } else
-                      viewModel.signIn(context: context);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: viewModel.isSignUpOn
-                          ? Colors.white
-                          : AppConstants.secondaryColor,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 3), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(48, 12, 48, 12),
-                      child: Text(
-                        viewModel.isSignUpOn ? "Sign up" : "Sign in",
-                        style: TextStyle(
-                            color: viewModel.isSignUpOn
-                                ? AppConstants.secondaryColor
-                                : Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            letterSpacing: 1.3),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
+                const ContinueButton(),
+                const SizedBox(
                   height: 12,
                 ),
-                Text(
+                const Text(
                   "Don't have an account?",
                   style: TextStyle(
                     color: Colors.indigo,
@@ -113,7 +75,7 @@ class SignView extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
                 TextButton(
@@ -150,21 +112,70 @@ class SignView extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(
+          contentPadding: const EdgeInsets.symmetric(
             horizontal: 8,
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.transparent, width: 2),
+            borderSide: const BorderSide(color: Colors.transparent, width: 2),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.transparent, width: 2),
+            borderSide: const BorderSide(color: Colors.transparent, width: 2),
           ),
           prefixIcon: Icon(iconData),
           hintText: hintText,
         ),
       ),
     );
+  }
+}
+
+class ContinueButton extends StatelessWidget {
+  const ContinueButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<UserInfoViewModel>(builder: (context, viewModel, _) {
+      return GestureDetector(
+        onTap: () {
+          if (viewModel.isSignUpOn) {
+          } else {
+            viewModel.signIn(context: context);
+          }
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: viewModel.isSignUpOn
+                ? Colors.white
+                : AppConstants.secondaryColor,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: const Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(48, 12, 48, 12),
+            child: Text(
+              viewModel.isSignUpOn ? "Sign up" : "Sign in",
+              style: TextStyle(
+                  color: viewModel.isSignUpOn
+                      ? AppConstants.secondaryColor
+                      : Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  letterSpacing: 1.3),
+            ),
+          ),
+        ),
+      );
+    });
   }
 }

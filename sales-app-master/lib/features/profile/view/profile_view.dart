@@ -3,9 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:sales_app/core/constants/app_constants.dart';
 import 'package:sales_app/features/category/view/category_product_loading.dart';
 import 'package:sales_app/features/category/view/category_product_view.dart';
-import 'package:sales_app/features/home/view/category_view_loading.dart';
-import 'package:sales_app/features/product/model/product_model.dart';
-import 'package:sales_app/features/product/view/product_view.dart';
 import 'package:sales_app/features/sign_page/view_model/user_info_view_model.dart';
 
 import '../view_model/profile_view_model.dart';
@@ -83,154 +80,144 @@ class _ProfileViewState extends State<ProfileView>
                     Positioned(
                       top: 10,
                       right: 10,
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.more_vert,
-                              color: AppConstants.primaryColor,
-                            ),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Center(
-                                    child: Material(
-                                      child: Consumer<ProfileViewModel>(
-                                          builder: (context, viewModel, _) {
-                                        return Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: width / 5 * 4,
-                                              // height: width / 7 * 2 + 32,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                color: Colors.white,
-                                              ),
-                                              child: Column(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      height: width / 7,
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                          color:
-                                                              Colors.grey[300]!,
-                                                          style:
-                                                              BorderStyle.solid,
-                                                          width: 1,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Row(
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(4.0),
-                                                              child: Icon(
-                                                                  Icons.camera),
-                                                            ),
-                                                            Expanded(
-                                                              child: Text(
-                                                                "Change profile picture",
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.more_vert,
+                            color: AppConstants.primaryColor,
+                          ),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Center(
+                                  child: Consumer<ProfileViewModel>(
+                                      builder: (context, viewModel, _) {
+                                    return Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: width / 5 * 4,
+                                          // height: width / 7 * 2 + 32,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            color: Colors.white,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  height: width / 7,
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      color: Colors.grey[300]!,
+                                                      style: BorderStyle.solid,
+                                                      width: 1,
                                                     ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            4),
                                                   ),
-                                                  Padding(
+                                                  child: const Padding(
                                                     padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
+                                                        EdgeInsets.all(8.0),
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
                                                       children: [
-                                                        InkWell(
-                                                          onTap: () {
-                                                            viewModel.signOut(
-                                                                context:
-                                                                    context);
-                                                          },
-                                                          child: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: AppConstants
-                                                                  .secondaryColor,
-                                                              border:
-                                                                  Border.all(
-                                                                color: AppConstants
-                                                                    .secondaryColor!,
-                                                                style:
-                                                                    BorderStyle
-                                                                        .solid,
-                                                                width: 1,
-                                                              ),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          4),
-                                                            ),
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Center(
-                                                                child: Row(
-                                                                  children: [
-                                                                    Icon(
-                                                                      Icons
-                                                                          .exit_to_app,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                    Text(
-                                                                      " Sign out",
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  4.0),
+                                                          child: Icon(
+                                                              Icons.camera),
+                                                        ),
+                                                        Expanded(
+                                                          child: Text(
+                                                            "Change profile picture",
                                                           ),
                                                         ),
                                                       ],
                                                     ),
                                                   ),
-                                                ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        );
-                                      }),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Material(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      InkWell(
+                                                        onTap: () {
+                                                          viewModel.signOut(
+                                                              context: context);
+                                                        },
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: AppConstants
+                                                                .secondaryColor,
+                                                            border: Border.all(
+                                                              color: AppConstants
+                                                                  .secondaryColor!,
+                                                              style: BorderStyle
+                                                                  .solid,
+                                                              width: 1,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        4),
+                                                          ),
+                                                          child: const Padding(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    8.0),
+                                                            child: Center(
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons
+                                                                        .exit_to_app,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                  Text(
+                                                                    " Sign out",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                                );
+                              },
+                            );
+                          },
                         ),
                       ),
                     )
@@ -245,17 +232,18 @@ class _ProfileViewState extends State<ProfileView>
                 builder: (context, viewModel, child) {
                   return TabBar(
                     controller: viewModel.tabController,
-                    labelStyle: TextStyle(
+                    labelStyle: const TextStyle(
                         color: Colors.black, fontWeight: FontWeight.bold),
                     labelColor: AppConstants.primaryColor,
                     unselectedLabelColor: Colors.grey,
-                    indicatorPadding: EdgeInsets.symmetric(horizontal: 60),
-                    unselectedLabelStyle: TextStyle(
+                    indicatorPadding:
+                        const EdgeInsets.symmetric(horizontal: 60),
+                    unselectedLabelStyle: const TextStyle(
                       color: Colors.grey,
                     ),
                     indicatorWeight: 3,
                     indicatorColor: AppConstants.primaryColor,
-                    tabs: [
+                    tabs: const [
                       Tab(
                         text: "Bought",
                       ),

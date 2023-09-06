@@ -12,6 +12,7 @@ import 'package:sales_app/core/constants/app_constants.dart';
 import 'package:sales_app/core/constants/utils.dart';
 import 'package:sales_app/features/category/model/category_model.dart';
 import 'package:sales_app/features/category/services/category_service.dart';
+import 'package:sales_app/features/product/model/color_model.dart';
 import 'package:sales_app/features/product/services/poster_service.dart';
 
 import '../../sign_page/view_model/user_info_view_model.dart';
@@ -28,9 +29,11 @@ class AddPageViewModel extends ChangeNotifier {
 
   List<File> listOfImages = [];
   List<Widget> carouselWidgets = [];
+  List<Widget> colorPaletteWidgetList = [];
+  List<PosterColor> colorPaletteList = [];
   List<GestureDetector> menuItems = [
     GestureDetector(
-      child: Padding(
+      child: const Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text("Choose"),
       ),
@@ -43,24 +46,35 @@ class AddPageViewModel extends ChangeNotifier {
   int scrollValue = 0;
   bool selectionIsOpen = false;
 
-  String? _chosenCategory;
-  XFile? _imageFile;
   File? nFile;
+
+  XFile? _imageFile;
   XFile get imageFile => this._imageFile!;
+  set imageFile(XFile value) => this._imageFile = value;
 
+  String? _chosenCategory;
   String? get chosenCategory => _chosenCategory;
-
   set chosenCategory(String? value) {
     _chosenCategory = value;
   }
 
-  set imageFile(XFile value) => this._imageFile = value;
   dynamic _pickImageError;
   dynamic get pickImageError => this._pickImageError;
+  set pickImageError(dynamic value) => this._pickImageError = value;
 
   final ImagePicker _picker = ImagePicker();
 
-  set pickImageError(dynamic value) => this._pickImageError = value;
+  Color? _currentChosenColor;
+  Color? get currentChosenColor => _currentChosenColor;
+  set currentChosenColor(Color? value) {
+    _currentChosenColor = value;
+  }
+
+  String? _currentChosenColorName;
+  String? get currentChosenColorName => _currentChosenColorName;
+  set currentChosenColorName(String? value) {
+    _currentChosenColorName = value;
+  }
 
   openCategories() {
     print("Open called");
@@ -83,18 +97,19 @@ class AddPageViewModel extends ChangeNotifier {
 
       print(menuItemsLoading);
       for (var element in value) {
-        print(element.getTitle);
+        CategoryModel category = CategoryModel.fromMap(element);
+        print(element.toString() + " element");
         menuItems2.add(
           GestureDetector(
             onTap: () {
-              _chosenCategory = element.getTitle;
+              _chosenCategory = category.getTitle;
               selectionIsOpen = false;
               notifyListeners();
             },
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
               child: Text(
-                element.getTitle,
+                category.getTitle,
                 style: TextStyle(fontSize: 16),
               ),
             ),
@@ -120,6 +135,11 @@ class AddPageViewModel extends ChangeNotifier {
       price: double.parse(priceController.text),
       userId: Provider.of<UserInfoViewModel>(context, listen: false).user.id,
       files: listOfImages,
+      posterColors: colorPaletteList,
+      token: Provider.of<UserInfoViewModel>(
+        context,
+        listen: false,
+      ).user.token,
     );
   }
 
@@ -389,5 +409,93 @@ class AddPageViewModel extends ChangeNotifier {
       showCustomSnack(text: "One or more fields are empty!");
       return false;
     }
+  }
+
+  addColorToTheList() {
+    if (currentChosenColor != null &&
+        currentChosenColorName != null &&
+        !colorPaletteList.contains(PosterColor(
+            colorName: currentChosenColorName!,
+            hexCode: currentChosenColor.toString()))) {
+      var posterColor = PosterColor(
+          colorName: currentChosenColorName!,
+          hexCode: currentChosenColor.toString());
+      colorPaletteList.add(posterColor);
+      colorPaletteWidgetList.add(
+        PaletteWidget(
+          color: currentChosenColor!,
+          colorName: currentChosenColorName!,
+        ),
+      );
+      notifyListeners();
+    }
+  }
+
+  removeFromTheList({required Color color}) {
+    // int index = colorPaletteList.indexOf(color);
+    // colorPaletteList.removeAt(index);
+    // colorPaletteWidgetList.removeAt(index);
+    notifyListeners();
+  }
+}
+
+class PaletteWidget extends StatelessWidget {
+  const PaletteWidget({
+    super.key,
+    required this.color,
+    required this.colorName,
+  });
+  final Color color;
+  final String colorName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey[200]!),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 15,
+                      backgroundColor: Colors.grey[200]!,
+                      child: CircleAvatar(
+                        radius: 13,
+                        backgroundColor: color,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Text(colorName),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 8,
+          ),
+          Consumer<AddPageViewModel>(builder: (context, viewModel, _) {
+            return IconButton(
+              onPressed: () {
+                Provider.of<AddPageViewModel>(context, listen: false)
+                    .removeFromTheList(color: color);
+              },
+              icon: const Icon(Icons.cancel),
+            );
+          }),
+        ],
+      ),
+    );
   }
 }

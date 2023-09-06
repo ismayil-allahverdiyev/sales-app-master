@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 
+import 'color_model.dart';
+
 class Product {
   var id;
   get getId => this.id;
@@ -35,15 +37,21 @@ class Product {
   get getFavs => this.favs;
   set setFavs(favs) => this.favs = favs;
 
-  Product(
-      {required this.id,
-      required this.title,
-      required this.price,
-      required this.rate,
-      this.images,
-      required this.favs,
-      required this.categorie,
-      required this.userId});
+  List<PosterColor>? colors;
+  get getColors => this.colors;
+  set setColors(colors) => this.colors = colors;
+
+  Product({
+    required this.id,
+    required this.title,
+    required this.price,
+    required this.rate,
+    this.images,
+    required this.favs,
+    required this.categorie,
+    required this.userId,
+    required this.colors,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -55,6 +63,7 @@ class Product {
       "rate": rate,
       "images": images,
       "favs": favs,
+      "colors": colors,
     };
   }
 
@@ -66,12 +75,13 @@ class Product {
               ? map['id']
               : "",
       title: map['title'],
-      price: double.parse(map['price']),
+      price: double.parse(map['price'].toString()),
       rate: map['rate'] != null ? map['rate'] : 0,
       images: map['image'] is List ? map['image'] : [map['image']],
       favs: map['favs'],
       categorie: map['category'] is List ? map['category'] : "",
       userId: map['userId'] is List ? map['userId'] : "",
+      colors: map['colors'],
     );
   }
 
@@ -85,6 +95,7 @@ class Product {
       favs: json['favs'],
       categorie: json['category'] is List ? json['category'] : "",
       userId: json['userId'] is List ? json['userId'] : "",
+      colors: json['colors'],
     );
   }
 
