@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
+
 import 'color_model.dart';
 
 class Product {
@@ -37,7 +39,7 @@ class Product {
   get getFavs => this.favs;
   set setFavs(favs) => this.favs = favs;
 
-  List<PosterColor>? colors;
+  List<Color>? colors;
   get getColors => this.colors;
   set setColors(colors) => this.colors = colors;
 
@@ -81,7 +83,11 @@ class Product {
       favs: map['favs'],
       categorie: map['category'] is List ? map['category'] : "",
       userId: map['userId'] is List ? map['userId'] : "",
-      colors: map['colors'],
+      colors: [
+        for (int i = 0; i < map['colorPalette'].length; i++)
+          Color(0xFF000000 +
+              int.parse(map['colorPalette'][i].substring(1, 7), radix: 16))
+      ],
     );
   }
 

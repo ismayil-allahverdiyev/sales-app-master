@@ -66,11 +66,6 @@ class PosterService {
       request.fields["colorPalette[$i][hexCode]"] = posterColors[i]
           .hexCode
           .substring(10, posterColors[i].hexCode.length - 1);
-
-      // colors.addAll({"colorPalette[$i]": {
-      //   "colorName": posterColors[i].colorName,
-      //   "hexCode": posterColors[i].hexCode,
-      // }});
     }
 
     var mimeType;

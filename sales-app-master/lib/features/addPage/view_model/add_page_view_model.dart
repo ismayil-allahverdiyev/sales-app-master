@@ -1,12 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
-import 'dart:convert';
-import 'package:async/async.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:sales_app/core/constants/app_constants.dart';
 import 'package:sales_app/core/constants/utils.dart';
@@ -186,8 +182,6 @@ class AddPageViewModel extends ChangeNotifier {
       );
 
       imageFile = pickedFile!;
-      print("Chosen");
-      print(imageFile);
 
       nFile = File(imageFile.path);
       bool isCropped = false;
@@ -199,7 +193,6 @@ class AddPageViewModel extends ChangeNotifier {
             isCropped = true;
             notifyListeners();
 
-            print("carousell " + carouselWidgets.length.toString());
             if (carouselWidgets.length != 0) {
               carouselWidgets.insert(
                 carouselWidgets.length - 1,
@@ -379,7 +372,7 @@ class AddPageViewModel extends ChangeNotifier {
                   border: Border.all(
                       color: Colors.grey[300]!, style: BorderStyle.solid),
                 ),
-                child: Center(
+                child: const Center(
                   child: Text(
                     "+",
                     style: TextStyle(
@@ -394,6 +387,9 @@ class AddPageViewModel extends ChangeNotifier {
         ),
       ),
     ];
+
+    colorPaletteList.clear();
+    colorPaletteWidgetList.clear();
 
     listOfImages = [];
     priceController.text = "";
@@ -412,15 +408,15 @@ class AddPageViewModel extends ChangeNotifier {
   }
 
   addColorToTheList() {
+    var poster = PosterColor(
+        colorName: currentChosenColorName!,
+        hexCode: currentChosenColor.toString());
+    bool exist = colorPaletteList.any((item) =>
+        item.colorName == poster.colorName && item.hexCode == poster.hexCode);
     if (currentChosenColor != null &&
         currentChosenColorName != null &&
-        !colorPaletteList.contains(PosterColor(
-            colorName: currentChosenColorName!,
-            hexCode: currentChosenColor.toString()))) {
-      var posterColor = PosterColor(
-          colorName: currentChosenColorName!,
-          hexCode: currentChosenColor.toString());
-      colorPaletteList.add(posterColor);
+        !exist) {
+      colorPaletteList.add(poster);
       colorPaletteWidgetList.add(
         PaletteWidget(
           color: currentChosenColor!,

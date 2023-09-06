@@ -152,6 +152,50 @@ class _ProductViewState extends State<ProductView>
                               ),
                             ),
                           ),
+                          Positioned(
+                            top: 50,
+                            right: 0,
+                            child: Column(
+                              children: [
+                                for (int i = 0;
+                                    i <
+                                        ((Provider.of<ProductViewModel>(context,
+                                                        listen: false)
+                                                    .currentProduct!
+                                                    .colors!
+                                                    .length >=
+                                                3)
+                                            ? 3
+                                            : Provider.of<ProductViewModel>(
+                                                    context,
+                                                    listen: false)
+                                                .currentProduct!
+                                                .colors!
+                                                .length);
+                                    i++)
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(8, 2, 8, 2),
+                                    child: Container(
+                                      height: 20,
+                                      width: 20,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(4),
+                                        border: Border.all(
+                                          color: Colors.grey[300]!,
+                                          width: 2,
+                                        ),
+                                        color: Provider.of<ProductViewModel>(
+                                                context,
+                                                listen: false)
+                                            .currentProduct!
+                                            .colors![i],
+                                      ),
+                                    ),
+                                  )
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
