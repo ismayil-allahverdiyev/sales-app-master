@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -72,9 +73,9 @@ class ProductViewModel extends ChangeNotifier {
   List<Comment> get commentList => this._commentList;
   set commentList(List<Comment> value) => this._commentList = value;
 
-  List<Image>? _imageWidgets;
-  List<Image> get imageWidgets => _imageWidgets!;
-  set imageWidgets(List<Image> value) {
+  List<CachedNetworkImage>? _imageWidgets;
+  List<CachedNetworkImage> get imageWidgets => _imageWidgets!;
+  set imageWidgets(List<CachedNetworkImage> value) {
     _imageWidgets = value;
   }
 
@@ -120,17 +121,23 @@ class ProductViewModel extends ChangeNotifier {
   }
 
   setImageWidgets(List value) {
-    List<Image> listOfWidgets = [];
+    List<CachedNetworkImage> listOfWidgets = [];
     var logicalScreenSize = window.physicalSize / window.devicePixelRatio;
     var width = logicalScreenSize.width;
-    var height = logicalScreenSize.height;
     value.forEach((element) {
-      listOfWidgets.add(
-        Image.network(
-          element,
-          fit: BoxFit.cover,
+      listOfWidgets.add(CachedNetworkImage(
+        imageUrl: element,
+        placeholder: (context, url) => Container(
+          width: width,
+          height: width / 3 * 4,
+          decoration: BoxDecoration(
+            boxShadow: [],
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.white,
+          ),
         ),
-      );
+        fit: BoxFit.cover,
+      ));
     });
 
     imageWidgets = listOfWidgets;

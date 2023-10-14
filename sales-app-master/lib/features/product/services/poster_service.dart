@@ -12,12 +12,37 @@ import 'package:sales_app/features/product/model/product_model.dart';
 import 'package:sales_app/features/product/services/comment_service.dart';
 
 class PosterService {
-  getAllPosters() async {
+  getAllPosters({
+    String? keyword,
+    required String token,
+    required List<String> categories,
+    required int minPrice,
+    required int maxPrice,
+    required List<String> colorList,
+  }) async {
     try {
-      http.Response response = await http
-          .get(Uri.parse(uri + "/api/getAllPosters"), headers: <String, String>{
-        "Content-Type": "application/json; charset=UTF-8",
-      });
+      String cats = "";
+      for (int i = 0; i < categories.length; i++) {
+        cats +=
+            "categories=${categories[i]}${(i + 1 < categories.length) ? "&" : ""}";
+      }
+      var link =
+          "$uri/api/filteredSearch${keyword != null ? "?keyword=$keyword" : ""}&minPrice=$minPrice&maxPrice=$maxPrice${categories.length > 1 ? "&$cats" : categories.length == 1 ? "&categories=" + categories[0] : ""}${colorList.length > 1 ? "&${[
+              for (int i = 0; i < colorList.length; i++)
+                "colorList=${colorList[i]}${(i + 1 < colorList.length) ? "&" : ""}",
+            ]}" : colorList.length == 1 ? "&colorList=" + colorList[0] : ""}&token=$token";
+
+      print("link " + link);
+
+      http.Response response = await http.get(
+        Uri.parse(
+          link,
+        ),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      );
+      print("Response is " + jsonDecode(response.body).toString());
       return jsonDecode(response.body);
     } catch (e) {
       print(e.toString());

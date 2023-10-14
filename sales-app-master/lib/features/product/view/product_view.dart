@@ -254,31 +254,7 @@ class _ProductViewState extends State<ProductView>
                             child: Consumer<ProductViewModel>(
                                 builder: (context, viewModel, _) {
                               return viewModel.checkingTheFavourites
-                                  ? Shimmer(
-                                      gradient: LinearGradient(colors: [
-                                        Colors.grey[300]!,
-                                        Colors.grey[200]!,
-                                      ]),
-                                      child: FittedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              viewModel.checkIfFavourited();
-                                            },
-                                            child: Image(
-                                              image: AssetImage(
-                                                  "assets/icons/heart_fill.png"),
-                                              color: viewModel
-                                                          .isFavouritedAtDispose ==
-                                                      false
-                                                  ? Colors.grey[700]
-                                                  : Colors.red,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
+                                  ? LikeLoading()
                                   : FittedBox(
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -514,5 +490,39 @@ class _ProductViewState extends State<ProductView>
         ),
       );
     }
+  }
+}
+
+class LikeLoading extends StatelessWidget {
+  const LikeLoading({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ProductViewModel>(builder: (context, viewModel, _) {
+      return Shimmer(
+        gradient: LinearGradient(colors: [
+          Colors.grey[300]!,
+          Colors.grey[200]!,
+        ]),
+        child: FittedBox(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: () {
+                viewModel.checkIfFavourited();
+              },
+              child: Image(
+                image: AssetImage("assets/icons/heart_fill.png"),
+                color: viewModel.isFavouritedAtDispose == false
+                    ? Colors.grey[700]
+                    : Colors.red,
+              ),
+            ),
+          ),
+        ),
+      );
+    });
   }
 }

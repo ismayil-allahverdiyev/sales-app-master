@@ -21,7 +21,7 @@ class BasketView extends StatelessWidget {
           width: width,
           height: 50,
           decoration: BoxDecoration(
-            color: Color(0xffF24E1E),
+            color: const Color(0xffF24E1E),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
@@ -32,19 +32,18 @@ class BasketView extends StatelessWidget {
                   color: Colors.white.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Center(
+                child: const Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    // ignore: prefer_const_literals_to_create_immutables
                     children: [
-                      const Image(
+                      Image(
                         color: Colors.white,
                         image: AssetImage(
                           "assets/icons/bagIcon.png",
                         ),
                       ),
-                      const Text(
+                      Text(
                         " 12.9 \$",
                         style: TextStyle(
                           color: Colors.white,
@@ -95,7 +94,7 @@ class BasketView extends StatelessWidget {
                     .token,
               );
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.remove,
               color: Colors.black,
             ),

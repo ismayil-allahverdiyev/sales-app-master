@@ -10,6 +10,7 @@ import 'package:sales_app/features/category/model/category_model.dart';
 import 'package:sales_app/features/category/services/category_service.dart';
 import 'package:sales_app/features/product/model/color_model.dart';
 import 'package:sales_app/features/product/services/poster_service.dart';
+import 'package:sales_app/features/search/view_model/search_view_model.dart';
 
 import '../../sign_page/view_model/user_info_view_model.dart';
 
@@ -60,13 +61,13 @@ class AddPageViewModel extends ChangeNotifier {
 
   final ImagePicker _picker = ImagePicker();
 
-  Color? _currentChosenColor;
+  Color? _currentChosenColor = Colors.red;
   Color? get currentChosenColor => _currentChosenColor;
   set currentChosenColor(Color? value) {
     _currentChosenColor = value;
   }
 
-  String? _currentChosenColorName;
+  String? _currentChosenColorName = "Red";
   String? get currentChosenColorName => _currentChosenColorName;
   set currentChosenColorName(String? value) {
     _currentChosenColorName = value;
@@ -239,12 +240,10 @@ class AddPageViewModel extends ChangeNotifier {
                 ),
               );
             }
+
             if (carouselWidgets.length != 1) {
               carouselWidgets.removeLast();
             }
-            print("carousell " +
-                carouselWidgets.length.toString() +
-                2.toString());
 
             carouselWidgets.add(
               Padding(
@@ -408,19 +407,21 @@ class AddPageViewModel extends ChangeNotifier {
   }
 
   addColorToTheList() {
-    var poster = PosterColor(
+    var posterColor = PosterColor(
         colorName: currentChosenColorName!,
         hexCode: currentChosenColor.toString());
     bool exist = colorPaletteList.any((item) =>
-        item.colorName == poster.colorName && item.hexCode == poster.hexCode);
+        item.colorName == posterColor.colorName &&
+        item.hexCode == posterColor.hexCode);
     if (currentChosenColor != null &&
         currentChosenColorName != null &&
         !exist) {
-      colorPaletteList.add(poster);
+      colorPaletteList.add(posterColor);
       colorPaletteWidgetList.add(
         PaletteWidget(
           color: currentChosenColor!,
           colorName: currentChosenColorName!,
+          isSearch: false,
         ),
       );
       notifyListeners();
@@ -429,69 +430,73 @@ class AddPageViewModel extends ChangeNotifier {
 
   removeFromTheList({required Color color}) {
     // int index = colorPaletteList.indexOf(color);
-    // colorPaletteList.removeAt(index);
-    // colorPaletteWidgetList.removeAt(index);
+    for (int i = 0; i < colorPaletteList.length; i++) {
+      print(colorPaletteList[i].hexCode == color.toString());
+      if (colorPaletteList[i].hexCode == color.toString()) {
+        colorPaletteList.removeAt(i);
+        colorPaletteWidgetList.removeAt(i);
+      }
+    }
+
     notifyListeners();
   }
 }
 
 class PaletteWidget extends StatelessWidget {
-  const PaletteWidget({
-    super.key,
-    required this.color,
-    required this.colorName,
-  });
+  const PaletteWidget(
+      {super.key,
+      required this.color,
+      required this.colorName,
+      required this.isSearch,
+      this.index});
   final Color color;
   final String colorName;
+  final bool isSearch;
+  final int? index;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey[200]!),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 15,
-                      backgroundColor: Colors.grey[200]!,
-                      child: CircleAvatar(
-                        radius: 13,
-                        backgroundColor: color,
-                      ),
+      child: Consumer<SearchViewModel>(builder: (context, viewModel, _) {
+        return InkWell(
+          onTap: () {
+            if (isSearch) {
+              viewModel.selectColor(
+                index: index!,
+              );
+            }
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              border: isSearch && viewModel.selectedColors[index!]
+                  ? Border.all(color: AppConstants.secondaryColor!, width: 2)
+                  : Border.all(color: Colors.grey[200]!, width: 2),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 15,
+                    backgroundColor: Colors.grey[200]!,
+                    child: CircleAvatar(
+                      radius: 13,
+                      backgroundColor: color,
                     ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Text(colorName),
-                  ],
-                ),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Text(colorName),
+                ],
               ),
             ),
           ),
-          const SizedBox(
-            width: 8,
-          ),
-          Consumer<AddPageViewModel>(builder: (context, viewModel, _) {
-            return IconButton(
-              onPressed: () {
-                Provider.of<AddPageViewModel>(context, listen: false)
-                    .removeFromTheList(color: color);
-              },
-              icon: const Icon(Icons.cancel),
-            );
-          }),
-        ],
-      ),
+        );
+      }),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sales_app/core/constants/app_constants.dart';
@@ -47,6 +48,8 @@ class CategoryProductView extends StatelessWidget {
                                   description: product.title,
                                   id: product.id,
                                   price: product.price,
+                                  colors: product.colors,
+                                  image: product.images![0],
                                 ),
                               )
                             : ProductView(
@@ -67,27 +70,28 @@ class CategoryProductView extends StatelessWidget {
                       // }
                     });
                   },
-                  child: Container(
-                    width: (width - 16) / 2,
-                    height: (width - 16) / 3 * 2,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppConstants.secondaryColor!.withOpacity(0.5),
-                          blurRadius: 2,
-                          blurStyle: BlurStyle.normal,
-                          spreadRadius: 0.01,
-                          offset: const Offset(2, 2),
-                        )
-                      ],
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          product.images![0],
+                  child: CachedNetworkImage(
+                    imageUrl: product.images![0],
+                    imageBuilder: (context, imageProvider) => Container(
+                      width: (width - 16) / 2,
+                      height: (width - 16) / 3 * 2,
+                      decoration: BoxDecoration(
+                        boxShadow: [],
+                        image: DecorationImage(
+                          image: imageProvider,
                         ),
-                        fit: BoxFit.cover,
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.white,
                       ),
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.white,
+                    ),
+                    placeholder: (context, url) => Container(
+                      width: (width - 16) / 2,
+                      height: (width - 16) / 3 * 2,
+                      decoration: BoxDecoration(
+                        boxShadow: [],
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),

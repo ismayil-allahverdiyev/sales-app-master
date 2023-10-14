@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sales_app/features/basket/models/basket_product_model.dart';
@@ -41,7 +42,38 @@ class BasketProductView extends StatelessWidget {
                       height: 80,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
-                        color: Colors.red,
+                      ),
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        separatorBuilder: (context, index) => const SizedBox(
+                          width: 2,
+                        ),
+                        itemCount: reloadableProduct.image.length,
+                        itemBuilder: (context, index) => CachedNetworkImage(
+                          imageUrl: reloadableProduct.image[index],
+                          imageBuilder: (context, imageProvider) => Container(
+                            width:
+                                reloadableProduct.image.length > 1 ? 69 : 140,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              borderRadius: reloadableProduct.image.length > 1
+                                  ? index == 0
+                                      ? const BorderRadius.only(
+                                          topLeft: Radius.circular(16),
+                                          bottomLeft: Radius.circular(16),
+                                        )
+                                      : const BorderRadius.only(
+                                          bottomRight: Radius.circular(16),
+                                          topRight: Radius.circular(16),
+                                        )
+                                  : BorderRadius.circular(16),
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),

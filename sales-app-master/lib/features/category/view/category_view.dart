@@ -53,7 +53,6 @@ class CategoryView extends StatelessWidget {
               : ListView.builder(
                   itemCount: viewModel.listOfProducts.length,
                   itemBuilder: (context, index) {
-                    print(index);
                     return Column(
                       children: [
                         CategoryProductView(
@@ -61,8 +60,8 @@ class CategoryView extends StatelessWidget {
                         ),
                         Divider(
                           color: Colors.grey[300],
-                          endIndent: 16,
-                          indent: 16,
+                          endIndent: 64,
+                          indent: 64,
                           thickness: 2,
                         )
                       ],

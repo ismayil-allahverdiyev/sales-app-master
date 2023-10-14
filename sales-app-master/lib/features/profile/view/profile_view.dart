@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sales_app/core/constants/app_constants.dart';
@@ -62,19 +64,36 @@ class _ProfileViewState extends State<ProfileView>
                               radius: width * 0.2 + 2,
                               backgroundColor: Colors.white,
                             ),
-                            CircleAvatar(
-                              radius: width * 0.2,
-                              backgroundColor: Colors.grey,
-                            ),
+                            Consumer<ProfileViewModel>(
+                                builder: (context, viewModel, _) {
+                              return CachedNetworkImage(
+                                imageUrl: viewModel.profileInfo.imageUrl,
+                                imageBuilder: (context, imageProvider) =>
+                                    CircleAvatar(
+                                  radius: width * 0.2,
+                                  backgroundImage: imageProvider,
+                                ),
+                                errorWidget: (context, url, error) => Icon(
+                                  Icons.person,
+                                  color: AppConstants.secondaryColor,
+                                ),
+                              );
+                            }),
                           ],
                         ),
                         SizedBox(
                           height: width * 0.05,
                         ),
-                        Text(
-                          "User Userov",
-                          style: TextStyle(fontSize: height * 0.02),
-                        ),
+                        Consumer<ProfileViewModel>(
+                            builder: (context, viewModel, _) {
+                          return Text(
+                            viewModel.profileInfo.name.capitalize,
+                            style: TextStyle(
+                              fontSize: height * 0.02,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        }),
                       ],
                     ),
                     Positioned(
@@ -244,10 +263,10 @@ class _ProfileViewState extends State<ProfileView>
                     indicatorWeight: 3,
                     indicatorColor: AppConstants.primaryColor,
                     tabs: const [
+                      Tab(text: "Favourites"),
                       Tab(
                         text: "Bought",
                       ),
-                      Tab(text: "Favourites"),
                     ],
                   );
                 },
@@ -259,14 +278,6 @@ class _ProfileViewState extends State<ProfileView>
               return TabBarView(
                 controller: viewModel.tabController,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 70),
-                    child: ListView(
-                      shrinkWrap: true,
-                      physics: BouncingScrollPhysics(),
-                      children: [],
-                    ),
-                  ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 70),
                     child: viewModel.favsIsLoading
@@ -282,6 +293,14 @@ class _ProfileViewState extends State<ProfileView>
                               );
                             },
                           ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 70),
+                    child: ListView(
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      children: [],
+                    ),
                   ),
                 ],
               );

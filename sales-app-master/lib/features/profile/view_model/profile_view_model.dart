@@ -3,14 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sales_app/features/product/model/product_model.dart';
 import 'package:sales_app/features/product/services/favourite_service.dart';
+import 'package:sales_app/features/profile/model/profile_model.dart';
+import 'package:sales_app/features/profile/service/profile_service.dart';
 import 'package:sales_app/features/sign_page/services/auth_service.dart';
 import 'package:sales_app/features/sign_page/view/sign_view.dart';
 import '../../sign_page/view_model/user_info_view_model.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   FavouriteService favouriteService = FavouriteService();
+  ProfileService profileService = ProfileService();
   AuthService authService = AuthService();
   List<Product> favourites = [];
+  ProfileInfo profileInfo = ProfileInfo(
+    name: "",
+    imageUrl: "",
+    type: "",
+  );
 
   bool _pageIsLoading = false;
   bool get pageIsLoading => this._pageIsLoading;
@@ -41,9 +49,6 @@ class ProfileViewModel extends ChangeNotifier {
 
   gettingFavourites({required String token}) async {
     favsIsLoading = true;
-    // if (isReloadable == true) {
-    //   notifyListeners();
-    // }
     List result = await favouriteService.getFavourites(token: token);
     print("Favs r " + result.toString());
     favourites.clear();
@@ -60,7 +65,8 @@ class ProfileViewModel extends ChangeNotifier {
 
   loadPage({required String token}) async {
     pageIsLoading = true;
-    gettingFavourites(token: token);
+    // gettingFavourites(token: token);
+    getProfileInfo(token: token);
     pageIsLoading = false;
   }
 
@@ -72,5 +78,11 @@ class ProfileViewModel extends ChangeNotifier {
       MaterialPageRoute(builder: (context) => SignView()),
       (route) => false,
     );
+  }
+
+  getProfileInfo({required String token}) async {
+    var result = await profileService.getProfileInfo(token: token);
+    profileInfo = ProfileInfo.fromJson(result);
+    notifyListeners();
   }
 }

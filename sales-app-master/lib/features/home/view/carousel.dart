@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sales_app/core/constants/app_constants.dart';
 
+import '../../displayPage/view/display_view.dart';
+
 class CarouselWidget extends StatefulWidget {
   const CarouselWidget({Key? key}) : super(key: key);
 
@@ -31,76 +33,86 @@ class _CarouselWidgetState extends State<CarouselWidget> {
             "Logo",
             style: TextStyle(color: Colors.black, fontSize: 30),
           ),
-          CarouselSlider(
-            items: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                child: SizedBox(
-                  width: 400,
-                  child: Card(
-                    margin: EdgeInsets.all(8.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: ClipRRect(
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  opaque: false,
+                  pageBuilder: (context, __, ___) => DisplayView(),
+                ),
+              );
+            },
+            child: CarouselSlider(
+              items: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                  child: SizedBox(
+                    width: 400,
+                    child: Card(
+                      margin: EdgeInsets.all(8.0),
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        child: Image.asset(
-                          "assets/images/native_americans.png",
-                          fit: BoxFit.cover,
-                        )),
+                      ),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Image.asset(
+                            "assets/images/native_americans.png",
+                            fit: BoxFit.cover,
+                          )),
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                child: SizedBox(
-                  width: 400,
-                  child: Card(
-                    margin: EdgeInsets.all(8.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: ClipRRect(
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                  child: SizedBox(
+                    width: 400,
+                    child: Card(
+                      margin: EdgeInsets.all(8.0),
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        child: Image.asset(
-                          "assets/images/whale.png",
-                          fit: BoxFit.cover,
-                        )),
+                      ),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Image.asset(
+                            "assets/images/whale.png",
+                            fit: BoxFit.cover,
+                          )),
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                child: SizedBox(
-                  width: 400,
-                  child: Card(
-                    margin: EdgeInsets.all(8.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: ClipRRect(
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                  child: SizedBox(
+                    width: 400,
+                    child: Card(
+                      margin: EdgeInsets.all(8.0),
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        child: Image.asset(
-                          "assets/images/trees.png",
-                          fit: BoxFit.cover,
-                        )),
+                      ),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Image.asset(
+                            "assets/images/trees.png",
+                            fit: BoxFit.cover,
+                          )),
+                    ),
                   ),
                 ),
+              ],
+              options: CarouselOptions(
+                height: 250.0,
+                enlargeCenterPage: true,
+                autoPlay: true,
+                aspectRatio: 3,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enableInfiniteScroll: false,
+                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                viewportFraction: 0.8,
+                pauseAutoPlayOnTouch: true,
+                onPageChanged: (index, reason) => setState(() {
+                  currentIndex = index;
+                }),
               ),
-            ],
-            options: CarouselOptions(
-              height: 250.0,
-              enlargeCenterPage: true,
-              autoPlay: true,
-              aspectRatio: 3,
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enableInfiniteScroll: false,
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
-              viewportFraction: 0.8,
-              pauseAutoPlayOnTouch: true,
-              onPageChanged: (index, reason) => setState(() {
-                currentIndex = index;
-              }),
             ),
           ),
           CarouselIndicator(

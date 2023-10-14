@@ -16,6 +16,7 @@ import 'package:sales_app/features/sign_page/view_model/user_info_view_model.dar
 
 import 'core/constants/app_constants.dart';
 import 'features/basket/view_model/basket_view_model.dart';
+import 'features/displayPage/view_model.dart/display_view_model.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -29,6 +30,7 @@ void main() {
       ChangeNotifierProvider(create: (_) => SearchViewModel()),
       ChangeNotifierProvider(create: (_) => PagesViewModel()),
       ChangeNotifierProvider(create: (_) => AddPageViewModel()),
+      ChangeNotifierProvider(create: (_) => DisplayViewModel()),
     ],
     child: MaterialApp(
       debugShowCheckedModeBanner: false,

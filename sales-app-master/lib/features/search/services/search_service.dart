@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:sales_app/core/constants/app_constants.dart';
+import 'package:sales_app/core/constants/utils.dart';
 import 'package:sales_app/features/category/model/category_model.dart';
 import 'package:sales_app/features/product/model/product_model.dart';
 
@@ -27,7 +28,7 @@ class SearchService {
     return res;
   }
 
-  Future filteredSearch({
+  filteredSearch({
     //needs fixing
     required String token,
     required List<String> categories,
@@ -44,5 +45,19 @@ class SearchService {
       );
       return jsonDecode(request.body);
     } catch (e) {}
+  }
+
+  getAllColors() async {
+    try {
+      var request = await http.get(
+        Uri.parse(uri + "/api/color/getAll"),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      );
+      return jsonDecode(request.body);
+    } catch (e) {
+      showCustomSnack(text: e.toString());
+    }
   }
 }
