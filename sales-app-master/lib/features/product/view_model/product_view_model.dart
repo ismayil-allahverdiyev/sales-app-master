@@ -192,6 +192,7 @@ class ProductViewModel extends ChangeNotifier {
       );
     }
     rateList = list;
+    return rateList;
   }
 
   loadThePage(Product? product, BuildContext context,

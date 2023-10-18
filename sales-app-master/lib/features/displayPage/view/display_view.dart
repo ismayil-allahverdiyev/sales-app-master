@@ -53,7 +53,7 @@ class DisplayView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Positioned(
+                  const Positioned(
                     top: 8,
                     left: 8,
                     child: Text(
@@ -159,7 +159,7 @@ class DisplayView extends StatelessWidget {
                                                   // viewModel.checkIfFavourited();
                                                 },
                                                 child: Image(
-                                                  image: AssetImage(
+                                                  image: const AssetImage(
                                                     // viewModel.isFavouritedAtDispose ==
                                                     true
                                                         ? "assets/icons/heart_fill.png"

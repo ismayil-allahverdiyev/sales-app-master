@@ -65,21 +65,49 @@ class HomePageView extends StatelessWidget {
                       bottomRight: Radius.circular(width * 0.15),
                     ),
                   ),
-                  expandedHeight: 410,
+                  expandedHeight: height * 0.8,
                   flexibleSpace: const FlexibleSpaceBar(
                     collapseMode: CollapseMode.none,
                     background: CarouselWidget(),
                   ),
                 ),
-                const SliverToBoxAdapter(
+                SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                    child: Text(
-                      "Shop insights",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Shop insights",
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: CupertinoTextField(
+                            placeholder: "Search...",
+                            prefix: const Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image(
+                                image:
+                                    AssetImage("assets/icons/search_home.png"),
+                                color: Colors.grey,
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey[300]!,
+                                style: BorderStyle.solid,
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            cursorColor: AppConstants.primaryColor,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 )
